@@ -28,24 +28,26 @@ public class RegisterController {
             switch(userType) {
                 case "clients":
                     user = objectMapper.readValue(userJson, Client.class);
+                    userService.saveClient((Client) user);
                     break;
                 case "sellers":
                     user = objectMapper.readValue(userJson, Seller.class);
+                    userService.saveSeller((Seller) user);
                     break;
                 case "admins":
                     user = objectMapper.readValue(userJson, Admin.class);
+                    userService.saveAdmin((Admin) user);
                     break;
                 default:
                     return ResponseEntity.badRequest().body("Invalid user type");
             }
         } catch(JsonProcessingException e) {
-            return ResponseEntity.badRequest().body("Invalid user data");
+            return ResponseEntity.badRequest().body("Invalid user data: " + e.getMessage());
+        } catch(Exception e) {
+            return ResponseEntity.badRequest().body("Unknown exception occurred: " + e.getMessage());
         }
 
-        // Save user to database
-        IUser res = userService.saveUser(userType, user);
-
-        return ResponseEntity.created(null).body(res.getEmail());
+        return ResponseEntity.created(null).body(user.getEmail());
     }
 
 }

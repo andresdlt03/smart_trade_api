@@ -2,7 +2,6 @@ package com.bluejtitans.smarttradebackend.users.service;
 
 import com.bluejtitans.smarttradebackend.users.model.Admin;
 import com.bluejtitans.smarttradebackend.users.model.Client;
-import com.bluejtitans.smarttradebackend.users.model.IUser;
 import com.bluejtitans.smarttradebackend.users.model.Seller;
 import com.bluejtitans.smarttradebackend.users.repository.AdminRepository;
 import com.bluejtitans.smarttradebackend.users.repository.ClientRepository;
@@ -25,22 +24,16 @@ public class UserService {
         this.sellerRepository = sellerRepository;
     }
 
-    public IUser saveUser(String userType, IUser user) {
-        return switch (userType) {
-            case "clients" -> {
-                Client client = (Client) user;
-                yield clientRepository.save(client);
-            }
-            case "sellers" -> {
-                Seller seller = (Seller) user;
-                yield sellerRepository.save(seller);
-            }
-            case "admins" -> {
-                Admin admin = (Admin) user;
-                yield adminRepository.save(admin);
-            }
-            default -> null;
-        };
+    public void saveClient(Client client) {
+        clientRepository.save(client);
+    }
+
+    public void saveSeller(Seller seller) {
+        sellerRepository.save(seller);
+    }
+
+    public void saveAdmin(Admin admin) {
+        adminRepository.save(admin);
     }
 
 }
