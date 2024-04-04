@@ -2,8 +2,10 @@ package com.bluejtitans.smarttradebackend.users.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
-public class User {
+@MappedSuperclass
+public class User implements IUser{
     @Id
     private String email;
     private String name;
