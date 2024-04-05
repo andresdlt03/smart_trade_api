@@ -1,25 +1,22 @@
 package com.bluejtitans.smarttradebackend.users.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
+@Table(name = "Seller")
+@PrimaryKeyJoinColumn(name = "email")
 public class Seller extends User {
+    @Id
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "company_name", nullable = false)
     private String companyName;
+
+    @Column(name = "cif", nullable = false)
     private String cif;
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
 }
