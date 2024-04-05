@@ -3,17 +3,19 @@ package com.bluejtitans.smarttradebackend.users.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserFactory {
-    public static IUser createUserFromJson(String userType, String userJson) {
+    public static IUser createUserFromJson(String userType, String json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return switch (userType) {
-                case "admin" -> objectMapper.readValue(userJson, Admin.class);
-                case "client" -> objectMapper.readValue(userJson, Client.class);
-                case "seller" -> objectMapper.readValue(userJson, Seller.class);
-                default -> throw new IllegalArgumentException("Invalid user type");
+                case "client" -> objectMapper.readValue(json, Client.class);
+                case "seller" -> objectMapper.readValue(json, Seller.class);
+                case "admin" -> objectMapper.readValue(json, Admin.class);
+                default -> null;
             };
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid user JSON");
+            e.printStackTrace();
+            return null;
         }
     }
+
 }
