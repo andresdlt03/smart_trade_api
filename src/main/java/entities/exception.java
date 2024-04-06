@@ -1,4 +1,4 @@
-package exception;
+package entities;
 
 public class exception {
 }
