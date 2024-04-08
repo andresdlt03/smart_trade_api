@@ -10,9 +10,11 @@ import entities.products.repository.ProductRepository;
 @Service
 public class ProductService {
 
+    private final ProductRepository productRepository;
     @Autowired
-    private ProductRepository productRepository;
-
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
     public Product getProduct(Long id) {
         return productRepository.findById(id).orElse(null);
     }
