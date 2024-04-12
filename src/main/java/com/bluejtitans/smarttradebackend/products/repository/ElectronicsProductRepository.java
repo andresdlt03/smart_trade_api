@@ -1,7 +1,7 @@
-package entities.products.repository;
+package com.bluejtitans.smarttradebackend.products.repository;
 
+import com.bluejtitans.smarttradebackend.products.model.ElectronicsProduct;
 import org.springframework.data.repository.CrudRepository;
-import entities.products.model.ElectronicsProduct;
 
 public interface ElectronicsProductRepository extends CrudRepository<ElectronicsProduct, Long> {
 }

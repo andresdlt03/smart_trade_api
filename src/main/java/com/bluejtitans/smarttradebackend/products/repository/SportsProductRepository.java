@@ -1,8 +1,7 @@
-package entities.products.repository;
+package com.bluejtitans.smarttradebackend.products.repository;
 
+import com.bluejtitans.smarttradebackend.products.model.SportsProduct;
 import org.springframework.data.repository.CrudRepository;
-
-import entities.products.model.SportsProduct;
 
 public interface SportsProductRepository extends CrudRepository<SportsProduct, Long> {
 }

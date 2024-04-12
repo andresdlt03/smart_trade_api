@@ -1,8 +1,7 @@
-package entities.products.repository;
+package com.bluejtitans.smarttradebackend.products.repository;
 
+import com.bluejtitans.smarttradebackend.products.model.FoodProduct;
 import org.springframework.data.repository.CrudRepository;
-
-import entities.products.model.FoodProduct;
 
 public interface FoodProductRepository extends CrudRepository<FoodProduct, Long> {
 }

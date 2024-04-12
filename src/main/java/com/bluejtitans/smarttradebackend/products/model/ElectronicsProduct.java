@@ -1,12 +1,12 @@
-package entities.products.model;
+package com.bluejtitans.smarttradebackend.products.model;
 import java.util.List;
 
-public class SportsProduct extends Product {
+public class ElectronicsProduct extends Product {
     private String type;
     private String brand;
     private String model;
 
-    public SportsProduct(String name, double price, int quantity, String description, String technicalSheet, List<String> images, String type, String brand, String model) {
+    public ElectronicsProduct(String name, double price, int quantity, String description, String technicalSheet, List<String> images, String type, String brand, String model) {
         super(name, price, quantity, description, technicalSheet, images);
         this.type = type;
         this.brand = brand;

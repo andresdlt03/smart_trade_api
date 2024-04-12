@@ -1,8 +1,5 @@
-package entities.products.model;
+package com.bluejtitans.smarttradebackend.products.model;
 import java.util.List;
-
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
 
 public class FoodProduct extends Product {
     private String origin;

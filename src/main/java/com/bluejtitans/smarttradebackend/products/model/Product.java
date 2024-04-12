@@ -1,4 +1,4 @@
-package entities.products.model;
+package com.bluejtitans.smarttradebackend.products.model;
 import java.util.List;
 
 import jakarta.persistence.Id;

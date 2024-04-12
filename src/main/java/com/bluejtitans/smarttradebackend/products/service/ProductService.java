@@ -1,11 +1,11 @@
-package entities.products.service;
+package com.bluejtitans.smarttradebackend.products.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import entities.products.model.Product;
-import entities.products.repository.ProductRepository;
+import com.bluejtitans.smarttradebackend.products.model.Product;
+import com.bluejtitans.smarttradebackend.products.repository.ProductRepository;
 
 @Service
 public class ProductService {
