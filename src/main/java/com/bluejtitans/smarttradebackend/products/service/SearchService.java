@@ -4,6 +4,6 @@ import com.bluejtitans.smarttradebackend.products.model.Product;
 import java.util.List;
 
 public interface SearchService {
-    List<Product> searchProducts(String query);
+    List<Product> searchProducts(String query, String category, Double minPrice, Double maxPrice);
 }
 
