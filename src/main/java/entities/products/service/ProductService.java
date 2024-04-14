@@ -32,56 +32,13 @@ public class ProductService {
     public void updateProduct(Long id, Product product) {
         Product p = productRepository.findById(id).orElse(null);
         if (p != null) {
-            updateProductName(id, product.getName());
-            updateProductPrice(id, product.getPrice());
-            updateProductQuantity(id, product.getQuantity());
-            updateProductDescription(id, product.getDescription());
-            updateProductTechnicalSheet(id, product.getDataSheet());
-            updateProductPhotos(id, product.getPhotos());
-        }
-    }
-    //region update
-    public void updateProductName(Long id, String name) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setName(name);
+            p.setName(product.getName());
+            p.setPrice(product.getPrice());
+            p.setQuantity(product.getQuantity());
+            p.setDescription(product.getDescription());
+            p.setDataSheet(product.getDataSheet());
+            p.setPhotos(product.getPhotos());
             productRepository.save(p);
         }
     }
-    public void updateProductPrice(Long id, double price) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setPrice(price);
-            productRepository.save(p);
-        }
-    }
-    public void updateProductQuantity(Long id, int quantity) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setQuantity(quantity);
-            productRepository.save(p);
-        }
-    }
-    public void updateProductTechnicalSheet(Long id, String technicalSheet) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setDataSheet(technicalSheet);
-            productRepository.save(p);
-        }
-    }
-    public void updateProductDescription(Long id, String description) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setDescription(description);
-            productRepository.save(p);
-        }
-    }
-    public void updateProductPhotos(Long id, List<String> photos) {
-        Product p = productRepository.findById(id).orElse(null);
-        if (p != null) {
-            p.setPhotos(photos);
-            productRepository.save(p);
-        }
-    }
-    //endregion
 }
