@@ -5,7 +5,7 @@ import jakarta.persistence.MappedSuperclass;
 import java.util.List;
 
 @MappedSuperclass
-public class Product {
+public class Product implements IProduct{
     @Id
     private String name;
     private String description;

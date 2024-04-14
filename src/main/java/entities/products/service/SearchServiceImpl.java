@@ -3,7 +3,7 @@ package entities.products.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import entities.products.model.*;
+import ourProducts.model.*;
 import entities.products.repository.ProductRepository;
 
 @Service

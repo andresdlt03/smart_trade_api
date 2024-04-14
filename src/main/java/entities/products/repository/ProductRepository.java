@@ -1,6 +1,6 @@
 package entities.products.repository;
 
-import entities.products.model.Product;
+import ourProducts.model.Product;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
