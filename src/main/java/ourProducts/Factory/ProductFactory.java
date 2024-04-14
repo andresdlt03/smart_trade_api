@@ -1,17 +1,10 @@
 package ourProducts.Factory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import ourProducts.modelDTO.ProductAttributesDTO;
 import ourProducts.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 public class ProductFactory {
-    private static String name;
-    private static String description;
-    private static double price;
-    private static int quantity;
-    private static String dataSheet;
-    private static List<String> photos;
     public static Product createProduct(String category, String productJson) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         Product product;
