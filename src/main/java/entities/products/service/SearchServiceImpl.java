@@ -18,15 +18,52 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Product> searchProducts(String query, String category, Double minPrice, Double maxPrice) {
+        List<Product> res = productRepository.findAll();
         if (query != null && !query.isEmpty()) {
-            return productRepository.findByNameOrDescription(query, query);
-        } else if (category != null && !category.isEmpty()) {
-            return productRepository.findByCategory(category);
-        } else if (minPrice != null && maxPrice != null) {
-            return productRepository.findByPriceBetween(minPrice, maxPrice);
-        } else {
-            return productRepository.findAll();
+            if (category != null && !category.isEmpty()) {
+                if (minPrice != null){
+                    if (maxPrice != null)
+                        res = productRepository.findByNameAndCategoryAndPriceRange(query, category, minPrice, maxPrice);
+                    else
+                        res = productRepository.findByNameAndCategoryAndMinPrice(query, category, minPrice);
+                } else if (maxPrice != null)
+                    res = productRepository.findByNameAndCategoryAndMaxPrice(query, category, maxPrice);
+                else
+                    res = productRepository.findByNameAndCategory(query, category);
+            } else if (minPrice != null){
+                if (maxPrice != null)
+                    res = productRepository.findByNameAndPriceRange(query, minPrice, maxPrice);
+                else
+                    res = productRepository.findByNameAndMinPrice(query, minPrice);
+            } else if (maxPrice != null)
+                res = productRepository.findByNameAndMaxPrice(query, maxPrice);
+            else
+                res = productRepository.findByName(query);
         }
+
+        if (category != null && !category.isEmpty()) {
+            if (minPrice != null){
+                if (maxPrice != null)
+                    res = productRepository.findByCategoryAndPriceRange(category, minPrice, maxPrice);
+                else
+                    res = productRepository.findByCategoryAndMinPrice(category, minPrice);
+            } else if (maxPrice != null)
+                res = productRepository.findByCategoryAndMaxPrice(category, maxPrice);
+            else
+                res = productRepository.findByCategory(category);
+        }
+
+        if (minPrice != null){
+            if (maxPrice != null)
+                res = productRepository.findByPriceBetween(minPrice, maxPrice);
+            else
+                res = productRepository.findByMinPrice(minPrice);
+        }
+
+        if (maxPrice != null)
+            res = productRepository.findByMaxPrice(maxPrice);
+
+        return res;
     }
 }
 
