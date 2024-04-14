@@ -7,6 +7,7 @@ import com.bluejtitans.smarttradebackend.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.bluejtitans.smarttradebackend.users.body.LoginCredentials;
 
 @Service
 public class UserService {
@@ -31,6 +32,13 @@ public class UserService {
         }
 
         return ResponseEntity.ok(user.getEmail());
+    }
+
+    public ResponseEntity<LoginCredentials> loginUser(LoginCredentials loginCredentials) {
+        User user = userRepository.findById(loginCredentials.getEmail()).orElse(null);
+        if(user == null || !user.getPassword().equals(loginCredentials.getPassword()))
+            return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.ok(loginCredentials);
     }
 
 }
