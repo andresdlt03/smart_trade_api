@@ -27,7 +27,7 @@ public class ProductController {
         this.productService = productService;
         this.searchService = searchService;
     }
-    @GetMapping("/search")
+    @GetMapping()
     public ResponseEntity<List<Product>> searchProducts(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String category,
