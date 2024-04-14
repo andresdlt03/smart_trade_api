@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import entities.products.model.Product;
+import ourProducts.model.Product;
 import entities.products.repository.ProductRepository;
 
 @Service
@@ -36,8 +36,8 @@ public class ProductService {
             updateProductPrice(id, product.getPrice());
             updateProductQuantity(id, product.getQuantity());
             updateProductDescription(id, product.getDescription());
-            updateProductTechnicalSheet(id, product.getTechnicalSheet());
-            updateProductImages(id, product.getImages());
+            updateProductTechnicalSheet(id, product.getDataSheet());
+            updateProductPhotos(id, product.getPhotos());
         }
     }
     //region update
@@ -65,7 +65,7 @@ public class ProductService {
     public void updateProductTechnicalSheet(Long id, String technicalSheet) {
         Product p = productRepository.findById(id).orElse(null);
         if (p != null) {
-            p.setTechnicalSheet(technicalSheet);
+            p.setDataSheet(technicalSheet);
             productRepository.save(p);
         }
     }
@@ -76,10 +76,10 @@ public class ProductService {
             productRepository.save(p);
         }
     }
-    public void updateProductImages(Long id, List<String> images) {
+    public void updateProductPhotos(Long id, List<String> photos) {
         Product p = productRepository.findById(id).orElse(null);
         if (p != null) {
-            p.setImages(images);
+            p.setPhotos(photos);
             productRepository.save(p);
         }
     }
