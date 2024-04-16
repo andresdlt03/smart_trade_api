@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginResponse {
-    private LoginCredentials loginCredentials;
+    private LoginCredentials loginCredentials = null;
     private String errorMessage = "";
 }

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class RegisterResponse {
     private String errorMessage = "";
-    private String email;
+    private String email = "";
 }
