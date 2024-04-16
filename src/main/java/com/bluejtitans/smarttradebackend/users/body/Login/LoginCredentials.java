@@ -1,4 +1,4 @@
-package com.bluejtitans.smarttradebackend.users.body;
+package com.bluejtitans.smarttradebackend.users.body.Login;
 
 import lombok.Getter;
 import lombok.Setter;

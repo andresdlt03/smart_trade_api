@@ -1,9 +1,8 @@
 package com.bluejtitans.smarttradebackend.users.controller;
 
-import com.bluejtitans.smarttradebackend.exception.UserAlreadyExistsException;
-import com.bluejtitans.smarttradebackend.users.body.LoginCredentials;
-import com.bluejtitans.smarttradebackend.users.model.Client;
-import com.bluejtitans.smarttradebackend.users.model.IUser;
+import com.bluejtitans.smarttradebackend.users.body.Login.LoginCredentials;
+import com.bluejtitans.smarttradebackend.users.body.Login.LoginResponse;
+import com.bluejtitans.smarttradebackend.users.body.Register.RegisterResponse;
 import com.bluejtitans.smarttradebackend.users.model.User;
 import com.bluejtitans.smarttradebackend.users.model.UserFactory;
 import com.bluejtitans.smarttradebackend.users.service.UserService;
@@ -23,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping("/{userType}")
-    public ResponseEntity<String> registerUser(@RequestBody String userJson, @PathVariable String userType) {
+    public ResponseEntity<RegisterResponse> registerUser(@RequestBody String userJson, @PathVariable String userType) {
         userType = userType.substring(0, userType.length() - 1);
         User user = (User) UserFactory.createUserFromJson(userType, userJson);
         return userService.saveUser(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginCredentials> loginUser(@RequestBody LoginCredentials loginCredentials) {
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginCredentials loginCredentials) {
         return userService.loginUser(loginCredentials);
     }
 
