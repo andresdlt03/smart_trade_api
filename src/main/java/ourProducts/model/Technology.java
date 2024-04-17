@@ -25,4 +25,5 @@ public abstract class Technology extends Product {
         this.energyDrain = energyDrain;
         this.model = model;
     }
+    
 }

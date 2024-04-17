@@ -5,9 +5,9 @@ import ourProducts.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 public class ProductFactory {
-    public static Product createProduct(String category, String productJson) throws JsonProcessingException {
+    public static IProduct createProduct(String category, String productJson) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Product product;
+        IProduct product;
         switch (category.toLowerCase()) {
             case "phone":
                 return product = objectMapper.readValue(productJson, Phone.class);

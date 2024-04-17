@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import ourProducts.model.Product;
+import ourProducts.model.*;
 import entities.products.repository.ProductRepository;
 
 @Service
