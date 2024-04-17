@@ -1,11 +1,11 @@
-package com.bluejtitans.smarttradebackend.users.body.Register;
+package com.bluejtitans.smarttradebackend.users.http.login;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterResponse {
+public class LoginFailed implements LoginResponse {
     private String errorMessage = "";
     private String email = "";
 }

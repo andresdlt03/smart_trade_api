@@ -1,12 +1,14 @@
 package com.bluejtitans.smarttradebackend.users.controller;
 
-import com.bluejtitans.smarttradebackend.users.body.Login.LoginCredentials;
-import com.bluejtitans.smarttradebackend.users.body.Login.LoginResponse;
-import com.bluejtitans.smarttradebackend.users.body.Register.RegisterResponse;
+import com.bluejtitans.smarttradebackend.users.http.login.LoginCredentials;
+import com.bluejtitans.smarttradebackend.users.http.login.LoginRequest;
+import com.bluejtitans.smarttradebackend.users.http.login.LoginResponse;
+import com.bluejtitans.smarttradebackend.users.http.register.RegisterResponse;
 import com.bluejtitans.smarttradebackend.users.model.User;
 import com.bluejtitans.smarttradebackend.users.model.UserFactory;
 import com.bluejtitans.smarttradebackend.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +30,9 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginCredentials loginCredentials) {
-        return userService.loginUser(loginCredentials);
+    @PostMapping(path = "/login")
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        return userService.loginUser(loginRequest);
     }
 
 }
