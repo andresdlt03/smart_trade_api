@@ -1,4 +1,4 @@
-package entities.products.repository;
+package ourProducts.repository;
 
 import ourProducts.model.Product;
 import java.util.List;

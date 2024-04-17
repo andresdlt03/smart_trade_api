@@ -1,4 +1,4 @@
-package entities.products.repository;
+package ourProducts.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import entities.products.model.ElectronicsProduct;

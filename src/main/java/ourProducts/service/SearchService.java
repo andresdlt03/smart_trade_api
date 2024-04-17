@@ -1,4 +1,4 @@
-package entities.products.service;
+package ourProducts.service;
 
 import java.util.List;
 import ourProducts.model.*;
