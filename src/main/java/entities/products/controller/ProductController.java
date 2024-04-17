@@ -39,8 +39,10 @@ public class ProductController {
 
     @PostMapping("/{productType}")
     public ResponseEntity<String> createProduct(@PathVariable String productType, @RequestBody String productJson){
+        Product product;
         try {
-            productService.createProduct(ProductFactory.createProduct(productType, productJson));
+            product = (Product) ProductFactory.createProduct(productType, productJson);
+            productService.createProduct(product);
         } catch(JsonProcessingException e){
             return ResponseEntity.badRequest().body("Invalid user data: " + e.getMessage());
         } catch(Exception e){
