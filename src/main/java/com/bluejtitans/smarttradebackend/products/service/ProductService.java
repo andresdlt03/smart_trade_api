@@ -14,22 +14,22 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    public Product getProduct(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Product getProduct(String name) {
+        return productRepository.findById(name).orElse(null);
     }
 
     public void saveProduct(Product product) {
         productRepository.save(product);
     }
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(String name) {
+        productRepository.deleteById(name);
     }
 
     public List<Product> getAllProducts() {
         return (List<Product>) productRepository.findAll();
     }
-    public void updateProduct(Long id, Product product) {
-        Product p = productRepository.findById(id).orElse(null);
+    public void updateProduct(String name, Product product) {
+        Product p = productRepository.findById(name).orElse(null);
         if (p != null) {
             p.setName(product.getName());
             p.setPrice(product.getPrice());
