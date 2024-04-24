@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 

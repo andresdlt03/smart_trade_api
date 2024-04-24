@@ -17,6 +17,7 @@ public class Product implements IProduct{
     private double price;
     private int quantity;
     private String dataSheet;
+    @ElementCollection
     private List<String> photos;
 
     public Product() {

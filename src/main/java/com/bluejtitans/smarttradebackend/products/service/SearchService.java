@@ -16,6 +16,7 @@ public class SearchService {
     public SearchService(ProductRepository productRepository) { this.productRepository = productRepository; }
 
     public List<Product> searchProducts(String query, String category, Double minPrice, Double maxPrice) {
+        /*
         List<Product> res = productRepository.findAll();
         if (query != null && !query.isEmpty()) {
             if (category != null && !category.isEmpty()) {
@@ -62,6 +63,8 @@ public class SearchService {
             res = productRepository.findByMaxPrice(maxPrice);
 
         return res;
+         */
+        return null;
     }
 }
 
