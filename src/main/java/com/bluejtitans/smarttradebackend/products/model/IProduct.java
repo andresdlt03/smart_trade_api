@@ -7,10 +7,6 @@ public interface IProduct {
     public void setName(String name);
     public String getDescription();
     public void setDescription(String description);
-    public double getPrice();
-    public void setPrice(double price);
-    public int getQuantity();
-    public void setQuantity(int quantity);
     public String getDataSheet();
     public void setDataSheet(String dataSheet);
     public List<String> getPhotos();
