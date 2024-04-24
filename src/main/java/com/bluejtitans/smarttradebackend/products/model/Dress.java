@@ -9,10 +9,4 @@ import java.util.List;
 @Getter
 @Setter
 public class Dress extends Clothes {
-    public Dress() {
-        super();
-    }
-    public Dress(String name, String description, double price, int quantity, String dataSheet, List<String> photos, String size) {
-        super(name, description, price, quantity, dataSheet, photos, size);
-    }
 }
