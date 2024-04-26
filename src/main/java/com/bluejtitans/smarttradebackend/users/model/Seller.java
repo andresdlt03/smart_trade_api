@@ -19,4 +19,7 @@ public class Seller extends User {
 
     @Column(name = "cif", nullable = false)
     private String cif;
+
+    @Column(name = "bank_account", nullable = false)
+    private String bankAccount;
 }
