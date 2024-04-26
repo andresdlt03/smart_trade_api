@@ -17,4 +17,13 @@ public class Client extends User {
 
     @Column(name = "dni", nullable = false)
     private String dni;
+
+    @Column(name = "delivery_address", nullable = false)
+    private String deliveryAddress;
+
+    @Column(name = "billing_address", nullable = false)
+    private String billingAddress;
+
+    @Column(name = "credit_card", nullable = true)
+    private String creditCard;
 }
