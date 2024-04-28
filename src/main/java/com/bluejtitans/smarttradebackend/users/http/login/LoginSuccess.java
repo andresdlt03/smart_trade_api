@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class LoginSuccess implements LoginResponse{
     private String email;
+    private String dni;
+    private String cif;
 }

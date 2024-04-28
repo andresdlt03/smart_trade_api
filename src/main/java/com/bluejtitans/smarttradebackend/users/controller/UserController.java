@@ -34,5 +34,4 @@ public class UserController {
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
         return userService.loginUser(loginRequest);
     }
-
 }

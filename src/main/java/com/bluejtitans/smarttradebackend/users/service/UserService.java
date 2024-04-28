@@ -5,6 +5,8 @@ import com.bluejtitans.smarttradebackend.users.http.login.*;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterFailed;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterResponse;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterSuccess;
+import com.bluejtitans.smarttradebackend.users.model.Client;
+import com.bluejtitans.smarttradebackend.users.model.Seller;
 import com.bluejtitans.smarttradebackend.users.model.User;
 import com.bluejtitans.smarttradebackend.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +48,29 @@ public class UserService {
         loginFailed.setEmail(loginCredentials.getEmail());
 
         User user = userRepository.findById(loginCredentials.getEmail()).orElse(null);
+        String cif = null;
+        String dni = null;
+
+        if (user != null) {
+             if (user instanceof Seller) {
+                Seller seller = (Seller) user;
+                cif = seller.getCif();
+            } else if (user instanceof Client) {
+                Client client = (Client) user;
+                dni = client.getDni();
+            }
+        }
+
         if(user == null || !user.getPassword().equals(loginCredentials.getPassword())) {
             loginFailed.setErrorMessage("Credenciales incorrectas. Inténtelo de nuevo.");
             return ResponseEntity.badRequest().body(loginFailed);
         }
 
         LoginSuccess loginSuccess = new LoginSuccess();
+        loginSuccess.setCif(cif);
+        loginSuccess.setDni(dni);
         loginSuccess.setEmail(loginCredentials.getEmail());
+
         return ResponseEntity.ok(loginSuccess);
     }
 }
