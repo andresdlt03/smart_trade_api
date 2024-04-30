@@ -32,8 +32,6 @@ public class ProductService {
         Product p = productRepository.findById(name).orElse(null);
         if (p != null) {
             p.setName(product.getName());
-            p.setPrice(product.getPrice());
-            p.setQuantity(product.getQuantity());
             p.setDescription(product.getDescription());
             p.setDataSheet(product.getDataSheet());
             p.setPhotos(product.getPhotos());
