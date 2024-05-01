@@ -30,9 +30,9 @@ public class ProductController {
             product = (Product) ProductFactory.createProductFromJson(productType, productJson);
             productService.saveProduct(product);
         } catch(JsonProcessingException e){
-            return ResponseEntity.badRequest().body("Invalid user data: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Formato del producto no válido");
         } catch(Exception e){
-            return ResponseEntity.badRequest().body("Unknown exception occurred: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Ha ocurrido un error inesperado");
         }
         return ResponseEntity.created(null).body("product.getName()");
     }
