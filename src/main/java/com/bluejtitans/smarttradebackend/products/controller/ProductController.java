@@ -1,6 +1,7 @@
 package com.bluejtitans.smarttradebackend.products.controller;
 import java.util.List;
 
+import com.bluejtitans.smarttradebackend.products.model.IProduct;
 import com.bluejtitans.smarttradebackend.products.model.Product;
 import com.bluejtitans.smarttradebackend.products.model.ProductFactory;
 import com.bluejtitans.smarttradebackend.products.service.ProductService;
@@ -25,9 +26,8 @@ public class ProductController {
 
     @PostMapping("/{productType}")
     public ResponseEntity<String> createProduct(@PathVariable String productType, @RequestBody String productJson){
-        Product product;
         try {
-            product = (Product) ProductFactory.createProductFromJson(productType, productJson);
+            Product product = (Product) ProductFactory.createProductFromJson(productType, productJson);
             productService.saveProduct(product);
         } catch(JsonProcessingException e){
             return ResponseEntity.badRequest().body("Formato del producto no válido");

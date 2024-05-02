@@ -22,6 +22,13 @@ public class ProductAvailability {
     private int quantity;
     private double price;
 
+    public ProductAvailability(Product product, Seller seller, int quantity, double price) {
+        this.product = product;
+        this.seller = seller;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public ProductAvailability() {
 
     }

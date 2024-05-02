@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @Entity
 public class Clothes extends Product {
-
     @Column
     private String size;
 }

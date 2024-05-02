@@ -17,14 +17,4 @@ public class Product implements IProduct{
     private String dataSheet;
     @ElementCollection
     private List<String> photos;
-
-    public Product() {
-
-    }
-    public Product(String name, String description, String dataSheet, List<String> photos) {
-        this.name = name;
-        this.description = description;
-        this.dataSheet = dataSheet;
-        this.photos = photos;
-    }
 }

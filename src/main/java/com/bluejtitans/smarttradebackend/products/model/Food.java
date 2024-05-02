@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @Entity
 public class Food extends Product {
-
     @Column
     private String calories;
 }

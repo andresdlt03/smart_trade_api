@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Book extends Product {
-
     @Column
     private String ISBN;
 
