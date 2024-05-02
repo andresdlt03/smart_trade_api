@@ -14,4 +14,13 @@ import java.util.List;
 public class Clothes extends Product {
     @Column
     private String size;
+
+    public Clothes(String name, String description, String dataSheet, List<String> photos, String size) {
+        super(name, description, dataSheet, photos);
+        this.size = size;
+    }
+
+    public Clothes() {
+
+    }
 }

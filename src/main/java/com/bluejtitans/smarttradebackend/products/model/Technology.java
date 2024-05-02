@@ -18,4 +18,19 @@ public class Technology extends Product {
 
     @Column
     private String model;
+
+    public Technology(String name, String description, String dataSheet, List<String> photos, String consume, String model) {
+        super(
+            name,
+            description,
+            dataSheet,
+            photos
+        );
+        this.consume = consume;
+        this.model = model;
+    }
+
+    public Technology() {
+
+    }
 }

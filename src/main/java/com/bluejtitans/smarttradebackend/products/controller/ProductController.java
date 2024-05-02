@@ -1,6 +1,7 @@
 package com.bluejtitans.smarttradebackend.products.controller;
 import java.util.List;
 
+import com.bluejtitans.smarttradebackend.products.dto.ProductDTO;
 import com.bluejtitans.smarttradebackend.products.model.IProduct;
 import com.bluejtitans.smarttradebackend.products.model.Product;
 import com.bluejtitans.smarttradebackend.products.model.ProductFactory;
@@ -25,16 +26,16 @@ public class ProductController {
     public ProductController(ProductService productService) { this.productService = productService; }
 
     @PostMapping("/{productType}")
-    public ResponseEntity<String> createProduct(@PathVariable String productType, @RequestBody String productJson){
+    public ResponseEntity<String> createProduct(@PathVariable String productType, @RequestBody ProductDTO productBody){
         try {
-            Product product = (Product) ProductFactory.createProductFromJson(productType, productJson);
+            Product product = (Product) ProductFactory.createProductFromDTO(productType, productBody);
             productService.saveProduct(product);
+            return ResponseEntity.created(null).body(product.getName());
         } catch(JsonProcessingException e){
             return ResponseEntity.badRequest().body("Formato del producto no válido");
         } catch(Exception e){
             return ResponseEntity.badRequest().body("Ha ocurrido un error inesperado");
         }
-        return ResponseEntity.created(null).body("product.getName()");
     }
 }
 
