@@ -19,13 +19,13 @@ public class ProductAvailability {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    private int quantity;
+    private int stock;
     private double price;
 
-    public ProductAvailability(Product product, Seller seller, int quantity, double price) {
+    public ProductAvailability(Product product, Seller seller, int stock, double price) {
         this.product = product;
         this.seller = seller;
-        this.quantity = quantity;
+        this.stock = stock;
         this.price = price;
     }
 
