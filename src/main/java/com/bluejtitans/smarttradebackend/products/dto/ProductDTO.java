@@ -16,6 +16,8 @@ public class ProductDTO {
     public List<String> photos;
     public double price;
     public int stock;
+    public String sellerEmail;
+    public String category;
 
     // technology specific attributes
     public String consume;
