@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.products.service;
 
+import com.bluejtitans.smarttradebackend.exception.UserNotRegisteredException;
 import com.bluejtitans.smarttradebackend.products.model.Product;
 import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
@@ -28,11 +29,11 @@ public class ProductService {
         return productRepository.findById(name).orElse(null);
     }
 
-    public void saveProduct(Product product, ProductAvailability productAvailability, String sellerEmail) {
+    public void saveProduct(Product product, ProductAvailability productAvailability, String sellerEmail) throws UserNotRegisteredException, RuntimeException {
         try {
             Optional<Product> p = productRepository.findById(product.getName());
             Seller seller = userRepository.findSellerById(sellerEmail);
-            if (seller == null) throw new RuntimeException("Seller with email " + sellerEmail + " not found");
+            if (seller == null) throw new UserNotRegisteredException("Seller with email " + sellerEmail + " not found");
             // If product is already published by another seller, add the new availability information to the existing product
             if (p.isPresent()) {
                 productAvailability.setProduct(p.get());
@@ -46,7 +47,7 @@ public class ProductService {
                 productAvailabilityRepository.save(productAvailability);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Unknown error occurred while saving product");
+            throw new RuntimeException("Unknown error ocurred while saving product");
         }
     }
     public void deleteProduct(String name) {
