@@ -56,14 +56,4 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return (List<Product>) productRepository.findAll();
     }
-    public void updateProduct(String name, Product product) {
-        Product p = productRepository.findById(name).orElse(null);
-        if (p != null) {
-            p.setName(product.getName());
-            p.setDescription(product.getDescription());
-            p.setDataSheet(product.getDataSheet());
-            p.setPhotos(product.getPhotos());
-            productRepository.save(p);
-        }
-    }
 }

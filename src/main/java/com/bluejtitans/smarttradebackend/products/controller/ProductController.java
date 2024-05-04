@@ -26,10 +26,10 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) { this.productService = productService; }
 
-    @PostMapping("/{productType}")
-    public ResponseEntity<String> createProduct(@PathVariable String productType, @RequestBody ProductDTO productBody){
+    @PostMapping("/{productCategory}")
+    public ResponseEntity<String> createProduct(@PathVariable String productCategory, @RequestBody ProductDTO productBody){
         try {
-            Product product = (Product) ProductFactory.createProductFromDTO(productType, productBody);
+            Product product = (Product) ProductFactory.createProductFromDTO(productCategory, productBody);
             ProductAvailability productAvailability = new ProductAvailability();
             productAvailability.setPrice(productBody.getPrice());
             productAvailability.setStock(productBody.getStock());
