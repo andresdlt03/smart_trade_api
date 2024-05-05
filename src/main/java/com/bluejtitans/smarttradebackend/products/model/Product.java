@@ -17,14 +17,16 @@ public class Product implements IProduct{
     private String dataSheet;
     @ElementCollection
     private List<String> photos;
+    private Boolean verified = false;
 
-    public Product() {
-
-    }
     public Product(String name, String description, String dataSheet, List<String> photos) {
         this.name = name;
         this.description = description;
         this.dataSheet = dataSheet;
         this.photos = photos;
+    }
+
+    public Product() {
+
     }
 }
