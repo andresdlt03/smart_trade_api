@@ -38,5 +38,5 @@ public class Client extends User {
     private ShoppingCart shoppingCart;
 
     @OneToOne
-    private Gift gift;
+    private GiftList giftList;
 }

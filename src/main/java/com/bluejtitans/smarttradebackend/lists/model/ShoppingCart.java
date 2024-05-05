@@ -3,32 +3,38 @@ package com.bluejtitans.smarttradebackend.lists.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ourProducts.model.Product;
+import com.bluejtitans.smarttradebackend.products.model.Product;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "Shopping_Cart")
 public class ShoppingCart extends ProductList {
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
+    private List<ShoppingCartProduct> products;
+
+    @Column(name = "iva")
+    private double iva;
+
+    @Column(name = "productsPrice")
+    private double productsPrice;
+
     @Column(name = "total_price")
     private double totalPrice;
 
-    @Override
-    public void addProduct(Product product) {
-        super.addProduct(product);
-        updatePrice();
+    /*public void addProduct(ShoppingCartProduct product) {
+        products.add(product);
+        updatePrice(product);
     }
-
-    @Override
-    public Product removeProduct(Product product) {
-        Product removed = super.removeProduct(product);
+    public void removeProduct(ShoppingCartProduct product) {
+        products.(product);
         updatePrice();
-        return removed;
     }
 
     public void updatePrice() {
         for (Product p : this.getProducts()) {
             totalPrice += p.getPrice();
         }
-    }
+    }*/
 }
