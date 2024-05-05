@@ -5,6 +5,9 @@ import com.bluejtitans.smarttradebackend.users.http.login.*;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterFailed;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterResponse;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterSuccess;
+import com.bluejtitans.smarttradebackend.users.model.Admin;
+import com.bluejtitans.smarttradebackend.users.model.Client;
+import com.bluejtitans.smarttradebackend.users.model.Seller;
 import com.bluejtitans.smarttradebackend.users.model.User;
 import com.bluejtitans.smarttradebackend.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +56,13 @@ public class UserService {
 
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setEmail(loginCredentials.getEmail());
+        if(user instanceof Client) {
+            loginSuccess.setUserType("client");
+        } else if (user instanceof Seller) {
+            loginSuccess.setUserType("seller");
+        } else if (user instanceof Admin) {
+            loginSuccess.setUserType("admin");
+        }
         return ResponseEntity.ok(loginSuccess);
     }
 }
