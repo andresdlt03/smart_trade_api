@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,12 +19,14 @@ public class Product implements IProduct{
     @ElementCollection
     private List<String> photos;
     private Boolean verified = false;
+    private String category;
 
-    public Product(String name, String description, String dataSheet, List<String> photos) {
+    public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;
         this.description = description;
         this.dataSheet = dataSheet;
         this.photos = photos;
+        this.category = category;
     }
 
     public Product() {

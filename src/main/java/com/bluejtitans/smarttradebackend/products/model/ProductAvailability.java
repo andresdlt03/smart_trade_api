@@ -18,12 +18,14 @@ public class ProductAvailability {
     private double price;
 
     public ProductAvailability(Product product, Seller seller, int stock, double price) {
-        this.id.setProduct(product);
-        this.id.setSeller(seller);
+        this.id = new ProductAvailabilityId(product, seller);
         this.stock = stock;
         this.price = price;
     }
 
+    public ProductAvailability() {
+
+    }
     public void setProduct(Product product) {
         this.id.setProduct(product);
     }
@@ -32,8 +34,12 @@ public class ProductAvailability {
         this.id.setSeller(seller);
     }
 
-    public ProductAvailability() {
+    public Product getProduct() {
+        return this.id.getProduct();
+    }
 
+    public Seller getSeller() {
+        return this.id.getSeller();
     }
 }
 
@@ -49,11 +55,12 @@ class ProductAvailabilityId implements Serializable {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    public ProductAvailabilityId() {
-    }
-
     public ProductAvailabilityId(Product product, Seller seller) {
         this.product = product;
         this.seller = seller;
+    }
+
+    public ProductAvailabilityId() {
+
     }
 }
