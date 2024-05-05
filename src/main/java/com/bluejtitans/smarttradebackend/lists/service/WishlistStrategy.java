@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class WishlistStrategy implements IListStrategy{
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public WishlistStrategy(ProductRepository productRepository){

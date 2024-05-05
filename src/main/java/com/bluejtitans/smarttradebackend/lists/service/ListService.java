@@ -16,8 +16,8 @@ import java.util.Optional;
 @Setter
 @Service
 public class ListService {
-    private ListRepository listRepository;
-    private IListStrategy listStrategy;
+    private final ListRepository listRepository;
+    private final IListStrategy listStrategy;
 
     @Autowired
     public ListService(ListRepository listRepository, IListStrategy listStrategy){

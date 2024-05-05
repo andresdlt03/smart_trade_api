@@ -7,7 +7,6 @@ import com.bluejtitans.smarttradebackend.exception.ProductNotInListException;
 import com.bluejtitans.smarttradebackend.lists.DTO.RequestDTO;
 import com.bluejtitans.smarttradebackend.lists.DTO.ShoppingCartRequestDTO;
 import com.bluejtitans.smarttradebackend.lists.model.ProductList;
-import com.bluejtitans.smarttradebackend.lists.model.SavedForLater;
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCart;
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCartProduct;
 import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartProductRepository;
@@ -18,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class ShoppingCartStrategy implements IListStrategy{
-    ProductRepository productRepository;
-    ShoppingCartProductRepository shoppingCartProductRepository;
+    private final ProductRepository productRepository;
+    private final ShoppingCartProductRepository shoppingCartProductRepository;
 
     @Autowired
     public ShoppingCartStrategy(ProductRepository productRepository, ShoppingCartProductRepository shoppingCartProductRepository){
@@ -53,30 +52,24 @@ public class ShoppingCartStrategy implements IListStrategy{
 
     @Override
     public ProductList removeProduct(ProductList list, RequestDTO request) throws Exception {
-        Optional<Product> productOptional = productRepository.findById(request.getProductId());
-        if(productOptional.isPresent()){
-            Product product = productOptional.get();
-            if(request instanceof ShoppingCartRequestDTO){
-                ShoppingCartRequestDTO shoppingCartRequest = (ShoppingCartRequestDTO) request;
-                if(list instanceof ShoppingCart){
-                    ShoppingCart shoppingCart = (ShoppingCart) list;
-                    Optional<ShoppingCartProduct> targetProduct = shoppingCart.getProducts().stream().filter(cp -> cp.getProduct().getName().equals(request.getProductId())).findFirst();
-                    if(targetProduct.isPresent()){
-                        shoppingCart.getProducts().remove(targetProduct.get());
-                        //INSERTAR METODO ACTUALIZAR PRECIO
-                        shoppingCartProductRepository.delete(targetProduct.get());
-                        return shoppingCart;
-                    } else{
-                        throw new ProductNotInListException("Product not found in Shopping Cart");
-                    }
+        if(request instanceof ShoppingCartRequestDTO){
+            ShoppingCartRequestDTO shoppingCartRequest = (ShoppingCartRequestDTO) request;
+            if(list instanceof ShoppingCart){
+                ShoppingCart shoppingCart = (ShoppingCart) list;
+                Optional<ShoppingCartProduct> targetProduct = shoppingCart.getProducts().stream().filter(cp -> cp.getProduct().getName().equals(request.getProductId())).findFirst();
+                if(targetProduct.isPresent()){
+                    shoppingCart.getProducts().remove(targetProduct.get());
+                    //INSERTAR METODO ACTUALIZAR PRECIO
+                    shoppingCartProductRepository.delete(targetProduct.get());
+                    return shoppingCart;
                 } else{
-                    throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+                    throw new ProductNotInListException("Product not found in Shopping Cart");
                 }
             } else{
-                throw new BadRequestException("Wrong RequestDTO for the list");
+                throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
             }
         } else{
-            throw new ProductNotFoundException("Product not found");
+            throw new BadRequestException("Wrong RequestDTO for the list");
         }
     }
 

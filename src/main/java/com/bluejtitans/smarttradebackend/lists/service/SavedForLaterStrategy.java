@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class SavedForLaterStrategy implements IListStrategy{
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public SavedForLaterStrategy(ProductRepository productRepository){

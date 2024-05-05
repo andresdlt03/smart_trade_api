@@ -3,24 +3,20 @@ package com.bluejtitans.smarttradebackend.lists.controller;
 import com.bluejtitans.smarttradebackend.lists.DTO.*;
 import com.bluejtitans.smarttradebackend.lists.model.ProductList;
 import com.bluejtitans.smarttradebackend.lists.service.*;
-import com.bluejtitans.smarttradebackend.users.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/client/{clientId}/lists")
 public class ListController {
-    private ListService listService;
-    private GiftListStrategy giftListStrategy;
-    private SavedForLaterStrategy savedForLaterStrategy;
-    private  ShoppingCartStrategy shoppingCartStrategy;
-    private  WishlistStrategy wishlistStrategy;
+    private final ListService listService;
+    private final GiftListStrategy giftListStrategy;
+    private final SavedForLaterStrategy savedForLaterStrategy;
+    private  final ShoppingCartStrategy shoppingCartStrategy;
+    private  final WishlistStrategy wishlistStrategy;
     @Autowired
     public ListController(ListService listService, GiftListStrategy giftListStrategy, SavedForLaterStrategy savedForLaterStrategy, ShoppingCartStrategy shoppingCartStrategy, WishlistStrategy wishlistStrategy) {
         this.listService = listService;
