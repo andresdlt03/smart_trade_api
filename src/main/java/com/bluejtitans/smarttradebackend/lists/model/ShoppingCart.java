@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "Shopping_Cart")
 public class ShoppingCart extends ProductList {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
-    private List<ShoppingCartProduct> products;
+    private List<ShoppingCartProduct> shoppingCartProducts;
 
     @Column(name = "iva")
     private double iva;

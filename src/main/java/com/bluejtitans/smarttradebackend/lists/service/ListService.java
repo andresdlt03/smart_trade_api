@@ -1,7 +1,7 @@
 package com.bluejtitans.smarttradebackend.lists.service;
 
 import com.bluejtitans.smarttradebackend.exception.ListDoesntExistException;
-import com.bluejtitans.smarttradebackend.lists.DTO.RequestDTO;
+import com.bluejtitans.smarttradebackend.lists.DTO.ListRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.bluejtitans.smarttradebackend.lists.repository.*;
@@ -38,14 +38,14 @@ public class ListService {
         }
     }
 
-    public ProductList addProduct(String clientId, String listType, IListStrategy listStrategy, RequestDTO request) throws Exception {
+    public ProductList addProduct(String clientId, String listType, IListStrategy listStrategy, ListRequestDTO request) throws Exception {
         ProductList list = getList(clientId, listType);
         ProductList modifiedList = listStrategy.addProduct(list, request);
         listRepository.save(modifiedList);
         return modifiedList;
     }
 
-    public ProductList removeProduct(String clientId, String listType, IListStrategy listStrategy, RequestDTO request) throws Exception {
+    public ProductList removeProduct(String clientId, String listType, IListStrategy listStrategy, ListRequestDTO request) throws Exception {
         ProductList list = getList(clientId, listType);
         ProductList modifiedList = listStrategy.removeProduct(list, request);
         listRepository.save(modifiedList);

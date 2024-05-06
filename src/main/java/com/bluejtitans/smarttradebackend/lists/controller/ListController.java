@@ -39,37 +39,30 @@ public class ListController {
     public ResponseEntity<?> addProductToList(
             @PathVariable String clientId,
             @PathVariable String listType,
-            @RequestBody RequestDTO request) {
+            @RequestBody ListRequestDTO request) {
 
         IListStrategy strategy;
-        Class<?> dtoClass;
 
-        //Determines the type of DTO and Strategy to use depending on the type of list
+        //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
                 strategy = wishlistStrategy;
-                dtoClass = RequestDTO.class;
                 break;
             case "savedforlater":
                 strategy = savedForLaterStrategy;
-                dtoClass = RequestDTO.class;
                 break;
             case "shoppingcart":
                 strategy = shoppingCartStrategy;
-                dtoClass = ShoppingCartRequestDTO.class;
                 break;
             case "giftlist":
                 strategy = giftListStrategy;
-                dtoClass = GiftRequestDTO.class;
                 break;
             default:
                 return ResponseEntity.badRequest().build();
         }
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            RequestDTO requestBody = (RequestDTO) mapper.convertValue(request, dtoClass);
-            ProductList result = listService.addProduct(clientId, listType, strategy, requestBody);
+            ProductList result = listService.addProduct(clientId, listType, strategy, request);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Wrong RequestDTO");
@@ -82,37 +75,30 @@ public class ListController {
     public ResponseEntity<?> deleteProductFromList(
             @PathVariable String clientId,
             @PathVariable String listType,
-            @RequestBody RequestDTO request) {
+            @RequestBody ListRequestDTO request) {
 
         IListStrategy strategy;
-        Class<?> dtoClass;
 
-        //Determines the type of DTO and Strategy to use depending on the type of list
+        //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
                 strategy = wishlistStrategy;
-                dtoClass = RequestDTO.class;
                 break;
             case "savedforlater":
                 strategy = savedForLaterStrategy;
-                dtoClass = RequestDTO.class;
                 break;
             case "shoppingcart":
                 strategy = shoppingCartStrategy;
-                dtoClass = ShoppingCartRequestDTO.class;
                 break;
             case "giftlist":
                 strategy = giftListStrategy;
-                dtoClass = GiftRequestDTO.class;
                 break;
             default:
                 return ResponseEntity.badRequest().build();
         }
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            RequestDTO requestBody = (RequestDTO) mapper.convertValue(request, dtoClass);
-            ProductList result = listService.removeProduct(clientId, listType, strategy, requestBody);
+            ProductList result = listService.removeProduct(clientId, listType, strategy, request);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Wrong RequestDTO");

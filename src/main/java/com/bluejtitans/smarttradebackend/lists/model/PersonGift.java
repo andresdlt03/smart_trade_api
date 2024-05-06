@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.lists.model;
 
+import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,8 @@ public class PersonGift{
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "product_availability_id")
+    private ProductAvailability productAvailability;
 
     @ManyToOne
     @JoinColumn(name = "giftList_id")
@@ -28,10 +29,10 @@ public class PersonGift{
     @Column(name = "date", nullable = true)
     private LocalDate date;
 
-    public PersonGift(String receiver, GiftList giftList, Product product, LocalDate date){
+    public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
         this.receiver = receiver;
         this.giftList = giftList;
-        this.product = product;
+        this.productAvailability = productAvailability;
         this.date = date;
     }
 }

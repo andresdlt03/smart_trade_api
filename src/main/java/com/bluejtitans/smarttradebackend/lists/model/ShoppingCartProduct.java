@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.lists.model;
 
+import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,15 +19,15 @@ public class ShoppingCartProduct {
     private ShoppingCart shoppingCart;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id")
-    private Product product;
+    @JoinColumn(name = "product_availability_id")
+    private ProductAvailability productAvailability;
 
     @Column(name = "quantity")
     private int quantity;
 
-    public ShoppingCartProduct(ShoppingCart shoppingCart, Product product, int quantity) {
+    public ShoppingCartProduct(ShoppingCart shoppingCart, ProductAvailability productAvailability, int quantity) {
         this.shoppingCart = shoppingCart;
-        this.product = product;
+        this.productAvailability = productAvailability;
         this.quantity = quantity;
     }
 }

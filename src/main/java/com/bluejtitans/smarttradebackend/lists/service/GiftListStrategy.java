@@ -1,62 +1,52 @@
 package com.bluejtitans.smarttradebackend.lists.service;
 
 import com.bluejtitans.smarttradebackend.exception.BadListStrategyCombinationException;
-import com.bluejtitans.smarttradebackend.exception.BadRequestException;
-import com.bluejtitans.smarttradebackend.exception.ProductNotFoundException;
+import com.bluejtitans.smarttradebackend.exception.ProductAvailabilityNotFoundException;
 import com.bluejtitans.smarttradebackend.exception.ProductNotInListException;
-import com.bluejtitans.smarttradebackend.lists.DTO.GiftRequestDTO;
-import com.bluejtitans.smarttradebackend.lists.DTO.RequestDTO;
+import com.bluejtitans.smarttradebackend.lists.DTO.ListRequestDTO;
 import com.bluejtitans.smarttradebackend.lists.model.*;
 import com.bluejtitans.smarttradebackend.lists.repository.PersonGiftRepository;
-import com.bluejtitans.smarttradebackend.products.model.Product;
-import com.bluejtitans.smarttradebackend.products.repository.ProductRepository;
+import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
+import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 public class GiftListStrategy implements IListStrategy{
-    private final ProductRepository productRepository;
+    private final ProductAvailabilityRepository productAvailabilityRepository;
     private final PersonGiftRepository personGiftRepository;
 
     @Autowired
-    public GiftListStrategy(ProductRepository productRepository, PersonGiftRepository personGiftRepository){
-        this.productRepository = productRepository;
+    public GiftListStrategy(ProductAvailabilityRepository productAvailabilityRepository, PersonGiftRepository personGiftRepository){
+        this.productAvailabilityRepository = productAvailabilityRepository;
         this.personGiftRepository = personGiftRepository;
     }
     @Override
-    public ProductList addProduct(ProductList list, RequestDTO request) throws Exception {
-        Optional<Product> productOptional = productRepository.findById(request.getProductId());
-        if(productOptional.isPresent()){
-            Product product = productOptional.get();
-            if(request instanceof GiftRequestDTO){
-                GiftRequestDTO giftRequestDTO = (GiftRequestDTO) request;
-                if(list instanceof GiftList){
-                    GiftList giftList = (GiftList) list;
-                    PersonGift personGift = new PersonGift(giftRequestDTO.getReceiver(), giftList, product, giftRequestDTO.getReminderDate());
-                    giftList.getPersonGifts().add(personGift);
-                    personGiftRepository.save(personGift);
-                    return giftList;
-                } else{
-                    throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
-                }
+    public ProductList addProduct(ProductList list, ListRequestDTO request) throws Exception {
+        ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
+        if(pa != null){
+            if(list instanceof GiftList){
+                GiftList giftList = (GiftList) list;
+                PersonGift personGift = new PersonGift(request.getReceiver(), giftList, pa, request.getReminder());
+                giftList.getPersonGifts().add(personGift);
+                personGiftRepository.save(personGift);
+                return giftList;
             } else{
-                throw new BadRequestException("Wrong RequestDTO for the list");
+                throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
             }
         } else{
-            throw new ProductNotFoundException("Product not found");
+            throw new ProductAvailabilityNotFoundException("Product not found");
         }
     }
 
     @Override
-    public ProductList removeProduct(ProductList list, RequestDTO request) throws Exception {
-        if(request instanceof GiftRequestDTO){
-            GiftRequestDTO giftRequestDTO = (GiftRequestDTO) request;
+    public ProductList removeProduct(ProductList list, ListRequestDTO request) throws Exception {
             if(list instanceof GiftList){
                 GiftList giftList = (GiftList) list;
                 Optional<PersonGift> targetGift =
-                        giftList.getPersonGifts().stream().filter(pg -> pg.getProduct().getName().equals(giftRequestDTO.getProductId()) &&
-                                pg.getReceiver().equals(giftRequestDTO.getReceiver()) &&
-                                pg.getDate().equals(giftRequestDTO.getReminderDate())).findFirst();
+                        giftList.getPersonGifts().stream().filter(pg -> pg.getProductAvailability().getProduct().getName().equals(request.getProductId()) &&
+                                pg.getReceiver().equals(request.getReceiver()) &&
+                                pg.getDate().equals(request.getReminder())).findFirst();
                 if(targetGift.isPresent()){
                     giftList.getPersonGifts().remove(targetGift.get());
                     personGiftRepository.delete(targetGift.get());
@@ -67,8 +57,5 @@ public class GiftListStrategy implements IListStrategy{
             } else{
                 throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
             }
-        } else{
-            throw new BadRequestException("Wrong RequestDTO for the list");
-        }
     }
 }
