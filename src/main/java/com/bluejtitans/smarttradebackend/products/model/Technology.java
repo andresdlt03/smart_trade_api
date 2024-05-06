@@ -24,7 +24,8 @@ public class Technology extends Product {
             name,
             description,
             dataSheet,
-            photos
+            photos,
+                "technology"
         );
         this.consume = consume;
         this.model = model;

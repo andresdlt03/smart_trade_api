@@ -1,11 +1,11 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
 import com.bluejtitans.smarttradebackend.exception.InvalidProductFormatException;
-import com.bluejtitans.smarttradebackend.products.dto.ProductDTO;
+import com.bluejtitans.smarttradebackend.products.dto.requests.InfoDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class ProductFactory {
-    public static IProduct createProductFromDTO(String category, ProductDTO product) throws JsonProcessingException {
+    public static IProduct createProductFromDTO(String category, InfoDTO product) throws JsonProcessingException {
         return switch (category) {
             case "technology" ->
                     new Technology(product.getName(), product.getDescription(), product.getDataSheet(), product.getPhotos(), product.getConsume(), product.getModel());

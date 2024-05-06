@@ -19,7 +19,8 @@ public class Food extends Product {
             name,
             description,
             dataSheet,
-            photos
+            photos,
+                "food"
         );
         this.calories = calories;
     }

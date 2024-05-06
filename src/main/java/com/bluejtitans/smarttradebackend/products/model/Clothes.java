@@ -16,7 +16,12 @@ public class Clothes extends Product {
     private String size;
 
     public Clothes(String name, String description, String dataSheet, List<String> photos, String size) {
-        super(name, description, dataSheet, photos);
+        super(
+                name,
+                description,
+                dataSheet,
+                photos,
+                "clothes");
         this.size = size;
     }
 

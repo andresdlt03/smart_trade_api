@@ -19,7 +19,8 @@ public class Book extends Product {
             name,
             description,
             dataSheet,
-            photos
+            photos,
+                "book"
         );
         this.ISBN = isbn;
     }
