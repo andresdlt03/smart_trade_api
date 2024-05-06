@@ -7,8 +7,8 @@ import java.util.Optional;
 
 @Repository
 public interface ListRepository extends CrudRepository<ProductList, Long>{
-    Optional<Wishlist> findWishlistByClientId(String email);
-    Optional<SavedForLater> findSavedForLaterByClientId(String email);
-    Optional<GiftList> findGiftListByClientId(String email);
-    Optional<ShoppingCart> findShoppingCartByClientId(String email);
+    Optional<Wishlist> findWishlistByClientId(String clientEmail);
+    Optional<SavedForLater> findSavedForLaterByClientId(String clientEmail);
+    Optional<GiftList> findGiftListByClientId(String clientEmail);
+    Optional<ShoppingCart> findShoppingCartByClientId(String clientEmail);
 }
