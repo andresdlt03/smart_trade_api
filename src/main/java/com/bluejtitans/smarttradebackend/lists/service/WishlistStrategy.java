@@ -12,9 +12,11 @@ import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import com.bluejtitans.smarttradebackend.products.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class WishlistStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
 

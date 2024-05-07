@@ -11,9 +11,11 @@ import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartProductRep
 import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class ShoppingCartStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
     private final ShoppingCartProductRepository shoppingCartProductRepository;
