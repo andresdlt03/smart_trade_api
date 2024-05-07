@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
+import com.bluejtitans.smarttradebackend.lists.model.SavedForLater;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -13,4 +13,7 @@ public interface ProductAvailabilityRepository extends CrudRepository<ProductAva
 
     @Query("SELECT pa FROM ProductAvailability pa WHERE pa.id.seller.email = ?1")
     List<ProductAvailability> findAllBySellerId(String sellerId);
+
+    @Query("SELECT pa FROM ProductAvailability pa WHERE pa.id.product.name = ?1 AND pa.id.seller.email = ?2")
+    ProductAvailability findProductAvailabilityByProductIdAndSellerId(String productId, String sellerId);
 }
