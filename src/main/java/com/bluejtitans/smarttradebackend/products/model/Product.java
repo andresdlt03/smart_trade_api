@@ -14,13 +14,20 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product implements IProduct{
     @Id
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "data_sheet")
     private String dataSheet;
     @ElementCollection
     private List<String> photos;
+    @Column(name = "verified")
     private Boolean verified = false;
+    @Column(name = "category")
     private String category;
+    @Column(name = "min_price")
+    private Double minPrice = 0.0;
 
     public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;

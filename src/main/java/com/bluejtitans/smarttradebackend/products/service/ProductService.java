@@ -39,12 +39,17 @@ public class ProductService {
             if (p.isPresent()) {
                 productAvailability.setProduct(p.get());
                 productAvailability.setSeller(seller);
+                if(productAvailability.getPrice() < p.get().getMinPrice()) {
+                    p.get().setMinPrice(productAvailability.getPrice());
+                    productRepository.save(p.get());
+                }
                 productAvailabilityRepository.save(productAvailability);
             }
             // If product is not published yet, create a new product and availability
             else {
                 productAvailability.setProduct(product);
                 productAvailability.setSeller(seller);
+                product.setMinPrice(productAvailability.getPrice());
                 productRepository.save(product);
                 productAvailabilityRepository.save(productAvailability);
             }
