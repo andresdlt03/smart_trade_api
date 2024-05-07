@@ -100,4 +100,13 @@ public class ProductService {
         }
         else return new ArrayList<>();
     }
+
+    public void setProductVerification(String productId, Boolean verify) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            product.get().setVerified(verify);
+            productRepository.save(product.get());
+        }
+        else throw new RuntimeException("Product with id " + productId + " not found");
+    }
 }

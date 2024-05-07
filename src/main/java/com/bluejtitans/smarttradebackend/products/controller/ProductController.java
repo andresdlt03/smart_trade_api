@@ -71,5 +71,16 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductsBySeller(sellerEmail));
     }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<String> verifyProduct(@PathVariable String productId, @RequestBody VerifyProductRequest verifyProductRequest) {
+        try {
+            productService.setProductVerification(productId, verifyProductRequest.getVerify());
+            return ResponseEntity.ok("Product " + productId + " verified");
+        } catch(RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e){
+            return ResponseEntity.badRequest().body("An unknown error occurred while verifying the product");
+        }
+    }
 }
 

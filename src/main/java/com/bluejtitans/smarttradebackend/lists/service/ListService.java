@@ -4,7 +4,6 @@ import com.bluejtitans.smarttradebackend.exception.ListDoesntExistException;
 import com.bluejtitans.smarttradebackend.lists.DTO.*;
 import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import com.bluejtitans.smarttradebackend.lists.repository.*;
 import com.bluejtitans.smarttradebackend.lists.model.*;
 import lombok.Getter;
@@ -12,17 +11,16 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
 @Service
 public class ListService {
-    private final ListRepository listRepository;
+    private final ProductListRepository listRepository;
     private final IListStrategy listStrategy;
 
     @Autowired
-    public ListService(ListRepository listRepository, IListStrategy listStrategy){
+    public ListService(ProductListRepository listRepository, IListStrategy listStrategy){
         this.listRepository = listRepository;
         this.listStrategy = listStrategy;
     }

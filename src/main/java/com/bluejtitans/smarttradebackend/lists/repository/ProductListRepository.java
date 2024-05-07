@@ -6,7 +6,7 @@ import com.bluejtitans.smarttradebackend.lists.model.*;
 import java.util.Optional;
 
 @Repository
-public interface ListRepository extends CrudRepository<ProductList, Long>{
+public interface ProductListRepository extends CrudRepository<ProductList, Long>{
     Optional<Wishlist> findWishlistByClientId(String clientEmail);
     Optional<SavedForLater> findSavedForLaterByClientId(String clientEmail);
     Optional<GiftList> findGiftListByClientId(String clientEmail);
