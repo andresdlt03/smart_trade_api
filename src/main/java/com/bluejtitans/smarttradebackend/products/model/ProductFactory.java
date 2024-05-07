@@ -1,6 +1,5 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
-import com.bluejtitans.smarttradebackend.exception.InvalidProductFormatException;
 import com.bluejtitans.smarttradebackend.products.dto.requests.InfoDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
