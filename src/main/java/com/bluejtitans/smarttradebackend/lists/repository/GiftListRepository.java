@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonGiftRepository extends CrudRepository<PersonGift, Long> {
+public interface GiftListRepository extends CrudRepository<PersonGift, Long> {
 }

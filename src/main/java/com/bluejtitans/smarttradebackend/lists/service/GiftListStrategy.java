@@ -5,7 +5,7 @@ import com.bluejtitans.smarttradebackend.exception.ProductAvailabilityNotFoundEx
 import com.bluejtitans.smarttradebackend.exception.ProductNotInListException;
 import com.bluejtitans.smarttradebackend.lists.DTO.ListRequestDTO;
 import com.bluejtitans.smarttradebackend.lists.model.*;
-import com.bluejtitans.smarttradebackend.lists.repository.PersonGiftRepository;
+import com.bluejtitans.smarttradebackend.lists.repository.GiftListRepository;
 import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import java.util.Optional;
 @Service
 public class GiftListStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
-    private final PersonGiftRepository personGiftRepository;
+    private final GiftListRepository personGiftRepository;
 
     @Autowired
-    public GiftListStrategy(ProductAvailabilityRepository productAvailabilityRepository, PersonGiftRepository personGiftRepository){
+    public GiftListStrategy(ProductAvailabilityRepository productAvailabilityRepository, GiftListRepository personGiftRepository){
         this.productAvailabilityRepository = productAvailabilityRepository;
         this.personGiftRepository = personGiftRepository;
     }

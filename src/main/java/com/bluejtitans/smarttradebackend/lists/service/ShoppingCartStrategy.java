@@ -7,7 +7,7 @@ import com.bluejtitans.smarttradebackend.lists.DTO.ListRequestDTO;
 import com.bluejtitans.smarttradebackend.lists.model.ProductList;
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCart;
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCartProduct;
-import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartProductRepository;
+import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartRepository;
 import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @Service
 public class ShoppingCartStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
-    private final ShoppingCartProductRepository shoppingCartProductRepository;
+    private final ShoppingCartRepository shoppingCartProductRepository;
 
     @Autowired
-    public ShoppingCartStrategy(ProductAvailabilityRepository productAvailabilityRepository, ShoppingCartProductRepository shoppingCartProductRepository){
+    public ShoppingCartStrategy(ProductAvailabilityRepository productAvailabilityRepository, ShoppingCartRepository shoppingCartProductRepository){
         this.productAvailabilityRepository = productAvailabilityRepository;
         this.shoppingCartProductRepository = shoppingCartProductRepository;
     }
@@ -29,8 +29,7 @@ public class ShoppingCartStrategy implements IListStrategy{
     public ProductList addProduct(ProductList list, ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
         if(pa != null){
-            if(list instanceof ShoppingCart){
-                ShoppingCart shoppingCart = (ShoppingCart) list;
+            if(list instanceof ShoppingCart shoppingCart){
                 ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(shoppingCart, pa, request.getQuantity());
                 shoppingCart.getShoppingCartProducts().add(shoppingCartProduct);
                 addPrice(shoppingCart, pa.getPrice());

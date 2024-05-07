@@ -10,7 +10,8 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "Person_Gift")
-public class PersonGift{
+public class PersonGift {
+
     @Column(name = "receiver")
     private String receiver;
 

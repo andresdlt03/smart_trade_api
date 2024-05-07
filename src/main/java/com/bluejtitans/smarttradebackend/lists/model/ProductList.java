@@ -17,22 +17,4 @@ public abstract class ProductList {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-
-    /*@ManyToMany
-    @JoinTable(
-            name = "lista_producto",
-            joinColumns = @JoinColumn(name = "lista_id"),
-            inverseJoinColumns = @JoinColumn(name = "producto_id"))
-    private java.util.List<Product> products;*/
-
-
-
-    /*public void addProduct(Product product) {
-        products.add(product);
-    }
-
-    public Product removeProduct(Product product) {
-        int removeIndex = products.indexOf(product);
-        return products.remove(removeIndex);
-    }*/
 }
