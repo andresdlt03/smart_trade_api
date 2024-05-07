@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.products.controller;
 
+import com.bluejtitans.smarttradebackend.exception.InvalidProductFormatException;
 import com.bluejtitans.smarttradebackend.exception.UserNotRegisteredException;
 import com.bluejtitans.smarttradebackend.products.dto.requests.AvailabilityDTO;
 import com.bluejtitans.smarttradebackend.products.dto.requests.InfoDTO;
