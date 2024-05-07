@@ -1,10 +1,10 @@
 package com.bluejtitans.smarttradebackend.users.service;
 
 import com.bluejtitans.smarttradebackend.exception.UserAlreadyExistsException;
-import com.bluejtitans.smarttradebackend.users.http.login.*;
-import com.bluejtitans.smarttradebackend.users.http.register.RegisterFailed;
-import com.bluejtitans.smarttradebackend.users.http.register.RegisterResponse;
-import com.bluejtitans.smarttradebackend.users.http.register.RegisterSuccess;
+import com.bluejtitans.smarttradebackend.users.controller.http.login.*;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterFailed;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterResponse;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterSuccess;
 import com.bluejtitans.smarttradebackend.users.model.Admin;
 import com.bluejtitans.smarttradebackend.users.model.Client;
 import com.bluejtitans.smarttradebackend.users.model.Seller;

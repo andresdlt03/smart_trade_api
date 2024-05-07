@@ -1,4 +1,4 @@
-package com.bluejtitans.smarttradebackend.users.http.register;
+package com.bluejtitans.smarttradebackend.users.controller.http.register;
 
 import lombok.Getter;
 import lombok.Setter;
