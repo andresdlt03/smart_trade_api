@@ -1,7 +1,8 @@
 package com.bluejtitans.smarttradebackend.lists.service;
 
 import com.bluejtitans.smarttradebackend.exception.ListDoesntExistException;
-import com.bluejtitans.smarttradebackend.lists.DTO.ListRequestDTO;
+import com.bluejtitans.smarttradebackend.lists.DTO.*;
+import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.bluejtitans.smarttradebackend.lists.repository.*;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Getter
@@ -50,5 +52,55 @@ public class ListService {
         ProductList modifiedList = listStrategy.removeProduct(list, request);
         listRepository.save(modifiedList);
         return modifiedList;
+    }
+
+    public void setResponseDTO(ListResponseDTO response, ProductList list, String listType){
+        List<ProductAvailability> paList;
+        List<ProductDTO> productDTOList;
+
+        switch (listType) {
+            case "wishlist":
+                Wishlist wishlist = (Wishlist) list;
+                paList = wishlist.getProductAvailabilities();
+                productDTOList = response.getProducts();
+                for (ProductAvailability pa : paList) {
+                    productDTOList.add(new ProductDTO(pa.getProduct(), pa.getSeller().getName(), pa.getPrice()));
+                }
+                response.setProducts(productDTOList);
+                break;
+            case "savedforlater":
+                SavedForLater savedForLater = (SavedForLater) list;
+                paList = savedForLater.getProductAvailabilities();
+                productDTOList = response.getProducts();
+                for (ProductAvailability pa : paList) {
+                    productDTOList.add(new ProductDTO(pa.getProduct(), pa.getSeller().getName(), pa.getPrice()));
+                }
+                response.setProducts(productDTOList);
+                break;
+            case "shoppingCart":
+                ShoppingCart shoppingCart = (ShoppingCart) list;
+                List<ShoppingCartProduct> shoppingProductList = shoppingCart.getShoppingCartProducts();
+                List<ShoppingProductDTO> shoppingProductDTOList = response.getCartProducts();
+                for (ShoppingCartProduct scp : shoppingProductList) {
+                    shoppingProductDTOList.add(new ShoppingProductDTO(scp.getQuantity(), scp.getProductAvailability().getProduct(), scp.getProductAvailability().getSeller().getName(), scp.getProductAvailability().getPrice()));
+                }
+                response.setCartProducts(shoppingProductDTOList);
+                response.setCartPrice(shoppingCart.getTotalPrice());
+                response.setIVA(shoppingCart.getIva());
+                response.setProductsPrice(shoppingCart.getProductsPrice());
+                break;
+            case "giftList":
+                GiftList giftList = (GiftList) list;
+                List<PersonGift> personGiftList = giftList.getPersonGifts();
+                List<GiftProductDTO> giftProductDTOList = response.getGiftProducts();
+                for (PersonGift pg : personGiftList) {
+                    giftProductDTOList.add(new GiftProductDTO(pg.getDate(), pg.getReceiver(), pg.getProductAvailability().getProduct(), pg.getProductAvailability().getSeller().getName(), pg.getProductAvailability().getPrice()));
+                }
+                response.setGiftProducts(giftProductDTOList);
+                break;
+            default:
+                // Manejar caso predeterminado si es necesario
+                break;
+        }
     }
 }

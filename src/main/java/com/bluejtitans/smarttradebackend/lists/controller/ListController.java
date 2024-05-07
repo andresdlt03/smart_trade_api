@@ -29,13 +29,15 @@ public class ListController {
     public ResponseEntity<?> getList(@PathVariable String clientId, @PathVariable String listType) {
         try {
             ProductList list = listService.getList(clientId, listType.toLowerCase());
-            return ResponseEntity.ok(list);
+            ListResponseDTO response = new ListResponseDTO();
+            listService.setResponseDTO(response, list, listType);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/products/{listType}")
+    @PostMapping("/{listType}/products")
     public ResponseEntity<?> addProductToList(
             @PathVariable String clientId,
             @PathVariable String listType,
@@ -63,7 +65,9 @@ public class ListController {
 
         try {
             ProductList result = listService.addProduct(clientId, listType, strategy, request);
-            return ResponseEntity.ok(result);
+            ListResponseDTO response = new ListResponseDTO();
+            listService.setResponseDTO(response, result, listType);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Wrong RequestDTO");
         } catch (Exception e) {
@@ -71,7 +75,7 @@ public class ListController {
         }
     }
 
-    @DeleteMapping("/products/{listType}")
+    @DeleteMapping("/{listType}/products")
     public ResponseEntity<?> deleteProductFromList(
             @PathVariable String clientId,
             @PathVariable String listType,
@@ -99,7 +103,9 @@ public class ListController {
 
         try {
             ProductList result = listService.removeProduct(clientId, listType, strategy, request);
-            return ResponseEntity.ok(result);
+            ListResponseDTO response = new ListResponseDTO();
+            listService.setResponseDTO(response, result, listType);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Wrong RequestDTO");
         } catch (Exception e) {
