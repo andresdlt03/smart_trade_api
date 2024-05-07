@@ -26,38 +26,50 @@ public class GiftListStrategy implements IListStrategy{
     @Override
     public ProductList addProduct(ProductList list, ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
-        if(pa != null){
-            if(list instanceof GiftList){
+        if (pa != null) {
+            if (list instanceof GiftList) {
                 GiftList giftList = (GiftList) list;
-                PersonGift personGift = new PersonGift(request.getReceiver(), giftList, pa, request.getReminder());
-                giftList.getPersonGifts().add(personGift);
-                personGiftRepository.save(personGift);
+                Optional<PersonGift> existingGift = giftList.getPersonGifts().stream()
+                        .filter(pg -> pg.getReceiver().equals(request.getReceiver()))
+                        .findFirst();
+                if (existingGift.isPresent()) {
+                    // Agregar el producto a la lista de ProductAvailabilities existente
+                    PersonGift personGift = existingGift.get();
+                    personGift.getProductAvailabilities().add(pa);
+                    personGiftRepository.save(personGift);
+                } else {
+                    // Crear un nuevo PersonGift y agregarlo a la lista de regalos
+                    PersonGift newPersonGift = new PersonGift(request.getReceiver(), giftList, pa, request.getReminder());
+                    giftList.getPersonGifts().add(newPersonGift);
+                    personGiftRepository.save(newPersonGift);
+                }
                 return giftList;
-            } else{
+            } else {
                 throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
             }
-        } else{
+        } else {
             throw new ProductAvailabilityNotFoundException("Product not found");
         }
     }
-
     @Override
     public ProductList removeProduct(ProductList list, ListRequestDTO request) throws Exception {
-            if(list instanceof GiftList){
-                GiftList giftList = (GiftList) list;
-                Optional<PersonGift> targetGift =
-                        giftList.getPersonGifts().stream().filter(pg -> pg.getProductAvailability().getProduct().getName().equals(request.getProductId()) &&
-                                pg.getReceiver().equals(request.getReceiver()) &&
-                                pg.getDate().equals(request.getReminder())).findFirst();
-                if(targetGift.isPresent()){
-                    giftList.getPersonGifts().remove(targetGift.get());
-                    personGiftRepository.delete(targetGift.get());
-                    return giftList;
-                } else{
-                       throw new ProductNotInListException("Product not found in Shopping Cart");
-                }
-            } else{
-                throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+        if (list instanceof GiftList) {
+            GiftList giftList = (GiftList) list;
+            Optional<PersonGift> targetGift = giftList.getPersonGifts().stream()
+                    .filter(pg -> pg.getProductAvailabilities().stream()
+                            .anyMatch(pa -> pa.getProduct().getName().equals(request.getProductId()))
+                            && pg.getReceiver().equals(request.getReceiver())
+                            && pg.getDate().equals(request.getReminder()))
+                    .findFirst();
+            if (targetGift.isPresent()) {
+                giftList.getPersonGifts().remove(targetGift.get());
+                personGiftRepository.delete(targetGift.get());
+                return giftList;
+            } else {
+                throw new ProductNotInListException("Product not found in Gift List");
             }
+        } else {
+            throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+        }
     }
 }
