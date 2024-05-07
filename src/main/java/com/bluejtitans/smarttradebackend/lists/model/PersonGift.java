@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import com.bluejtitans.smarttradebackend.products.model.Product;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -19,9 +22,13 @@ public class PersonGift {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_availability_id")
-    private ProductAvailability productAvailability;
+    @ManyToMany
+    @JoinTable(
+            name = "person_gift_product_availability",
+            joinColumns = @JoinColumn(name = "person_gift_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_availability_id")
+    )
+    private List<ProductAvailability> productAvailabilities = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "giftList_id")
@@ -33,7 +40,7 @@ public class PersonGift {
     public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
         this.receiver = receiver;
         this.giftList = giftList;
-        this.productAvailability = productAvailability;
+        productAvailabilities.add(productAvailability);
         this.date = date;
     }
 }
