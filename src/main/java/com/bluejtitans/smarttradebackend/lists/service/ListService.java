@@ -92,7 +92,10 @@ public class ListService {
                 List<PersonGift> personGiftList = giftList.getPersonGifts();
                 List<GiftProductDTO> giftProductDTOList = response.getGiftProducts();
                 for (PersonGift pg : personGiftList) {
-                    giftProductDTOList.add(new GiftProductDTO(pg.getDate(), pg.getReceiver(), pg.getProductAvailability().getProduct(), pg.getProductAvailability().getSeller().getName(), pg.getProductAvailability().getPrice()));
+                    List<ProductAvailability> productAvailabilities = pg.getProductAvailabilities();
+                    for (ProductAvailability pa : productAvailabilities) {
+                        giftProductDTOList.add(new GiftProductDTO(pg.getDate(), pg.getReceiver(), pa.getProduct(), pa.getSeller().getName(), pa.getPrice()));
+                    }
                 }
                 response.setGiftProducts(giftProductDTOList);
                 break;
