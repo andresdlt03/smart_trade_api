@@ -19,25 +19,22 @@ import java.util.Optional;
 @Service
 public class WishlistStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
+    private Wishlist wishlist;
 
     @Autowired
-    public WishlistStrategy(ProductAvailabilityRepository productAvailabilityRepository){
+    public WishlistStrategy(ProductAvailabilityRepository productAvailabilityRepository, ProductList list){
         this.productAvailabilityRepository = productAvailabilityRepository;
+        this.wishlist = (Wishlist) list;
     }
     @Override
-    public ProductList addProduct(ProductList list, ListRequestDTO request) throws Exception {
+    public ProductList addProduct(ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
         if(pa != null){
-            if(list instanceof Wishlist){
-                Wishlist wishlist = (Wishlist) list;
-                if(!productInList(wishlist, pa)){
-                    wishlist.getProductAvailabilities().add(pa);
-                    return wishlist;
-                } else{
-                    throw new ProductAlreadyAddedException("Product already in Wishlist");
-                }
+            if(!productInList(pa)){
+                wishlist.getProductAvailabilities().add(pa);
+                return wishlist;
             } else{
-                throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+                throw new ProductAlreadyAddedException("Product already in Wishlist");
             }
         } else{
             throw new ProductAvailabilityNotFoundException("Product not found");
@@ -45,26 +42,21 @@ public class WishlistStrategy implements IListStrategy{
     }
 
     @Override
-    public ProductList removeProduct(ProductList list, ListRequestDTO request) throws Exception {
+    public ProductList removeProduct(ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
         if(pa != null){
-            if(list instanceof Wishlist){
-                Wishlist wishlist = (Wishlist) list;
-                if(productInList(wishlist, pa)){
-                    wishlist.getProductAvailabilities().remove(pa);
-                    return wishlist;
-                } else{
-                    throw new ProductNotInListException("Product not in Wishlist");
-                }
+            if(productInList(pa)){
+                wishlist.getProductAvailabilities().remove(pa);
+                return wishlist;
             } else{
-                throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+                throw new ProductNotInListException("Product not in Wishlist");
             }
         } else{
             throw new ProductAvailabilityNotFoundException("Product not found");
         }
     }
 
-    public boolean productInList(Wishlist list, ProductAvailability pa){
-        return list.getProductAvailabilities().contains(pa);
+    public boolean productInList(ProductAvailability pa){
+        return wishlist.getProductAvailabilities().contains(pa);
     }
 }

@@ -18,44 +18,44 @@ import java.util.Optional;
 @Service
 public class SavedForLaterStrategy implements IListStrategy{
     private final ProductAvailabilityRepository productAvailabilityRepository;
+    private SavedForLater savedForLater;
 
     @Autowired
-    public SavedForLaterStrategy(ProductAvailabilityRepository productAvailabilityRepository) {
+    public SavedForLaterStrategy(ProductAvailabilityRepository productAvailabilityRepository,  ProductList list) {
         this.productAvailabilityRepository = productAvailabilityRepository;
+        this.savedForLater = (SavedForLater) list;
     }
     @Override
-    public ProductList addProduct(ProductList list, ListRequestDTO request) throws Exception {
+    public ProductList addProduct(ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
-        if (list instanceof SavedForLater) {
-            SavedForLater savedForLater = (SavedForLater) list;
-            if (!productInList(savedForLater, pa)) {
+        if(pa != null){
+            if (!productInList(pa)) {
                 savedForLater.getProductAvailabilities().add(pa);
                 return savedForLater;
             } else {
                 throw new ProductAlreadyAddedException("Product already in Saved For Later");
             }
-        } else {
-            throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+        } else{
+            throw new ProductAvailabilityNotFoundException("Product not found");
         }
     }
 
     @Override
-    public ProductList removeProduct(ProductList list, ListRequestDTO request) throws Exception {
+    public ProductList removeProduct(ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
-        if(list instanceof SavedForLater){
-            SavedForLater savedForLater = (SavedForLater) list;
-            if(productInList(savedForLater, pa)){
+        if(pa != null){
+            if(productInList(pa)){
                 savedForLater.getProductAvailabilities().remove(pa);
                 return savedForLater;
             } else{
                 throw new ProductNotInListException("Product not in Saved For Later");
             }
         } else{
-            throw new BadListStrategyCombinationException("Incorrect list-strategy combination");
+            throw new ProductAvailabilityNotFoundException("Product not found");
         }
     }
 
-    public boolean productInList(SavedForLater list, ProductAvailability pa ){
-        return list.getProductAvailabilities().contains(pa);
+    public boolean productInList(ProductAvailability pa ){
+        return savedForLater.getProductAvailabilities().contains(pa);
     }
 }

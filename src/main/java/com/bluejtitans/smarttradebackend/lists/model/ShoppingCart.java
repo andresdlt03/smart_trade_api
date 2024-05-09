@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.lists.model;
 
+import com.bluejtitans.smarttradebackend.users.model.Client;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,18 +24,10 @@ public class ShoppingCart extends ProductList {
     @Column(name = "total_price")
     private double totalPrice;
 
-    /*public void addProduct(ShoppingCartProduct product) {
-        products.add(product);
-        updatePrice(product);
+    public ShoppingCart(Client client){
+        this.setClient(client);
+        this.iva = 0.0;
+        this.productsPrice = 0.0;
+        this.totalPrice = 0.0;
     }
-    public void removeProduct(ShoppingCartProduct product) {
-        products.(product);
-        updatePrice();
-    }
-
-    public void updatePrice() {
-        for (Product p : this.getProducts()) {
-            totalPrice += p.getPrice();
-        }
-    }*/
 }

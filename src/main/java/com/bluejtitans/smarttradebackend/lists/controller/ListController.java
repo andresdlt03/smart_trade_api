@@ -2,8 +2,10 @@ package com.bluejtitans.smarttradebackend.lists.controller;
 
 import com.bluejtitans.smarttradebackend.lists.DTO.*;
 import com.bluejtitans.smarttradebackend.lists.model.ProductList;
+import com.bluejtitans.smarttradebackend.lists.repository.GiftPersonRepository;
+import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartRepository;
 import com.bluejtitans.smarttradebackend.lists.service.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/clients/{clientId}/lists")
 public class ListController {
+    private final ProductAvailabilityRepository productAvailabilityRepository;
+    private final GiftPersonRepository giftPersonRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
     private final ListService listService;
-    private final GiftListStrategy giftListStrategy;
-    private final SavedForLaterStrategy savedForLaterStrategy;
-    private  final ShoppingCartStrategy shoppingCartStrategy;
-    private  final WishlistStrategy wishlistStrategy;
     @Autowired
-    public ListController(ListService listService, GiftListStrategy giftListStrategy, SavedForLaterStrategy savedForLaterStrategy, ShoppingCartStrategy shoppingCartStrategy, WishlistStrategy wishlistStrategy) {
+    public ListController(ProductAvailabilityRepository productAvailabilityRepository, ShoppingCartRepository shoppingCartRepository, GiftPersonRepository giftPersonRepository, ListService listService) {
+        this.productAvailabilityRepository = productAvailabilityRepository;
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.giftPersonRepository = giftPersonRepository;
         this.listService = listService;
-        this.giftListStrategy = giftListStrategy;
-        this.savedForLaterStrategy = savedForLaterStrategy;
-        this.shoppingCartStrategy = shoppingCartStrategy;
-        this.wishlistStrategy = wishlistStrategy;
     }
     @GetMapping("/{listType}")
     public ResponseEntity<?> getList(@PathVariable String clientId, @PathVariable String listType) {
@@ -44,27 +44,33 @@ public class ListController {
             @RequestBody ListRequestDTO request) {
 
         IListStrategy strategy;
+        ProductList list;
+        try{
+             list = listService.getList(clientId, listType);
+        } catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
-                strategy = wishlistStrategy;
+                strategy = new WishlistStrategy(productAvailabilityRepository, list);
                 break;
             case "savedforlater":
-                strategy = savedForLaterStrategy;
+                strategy = new SavedForLaterStrategy(productAvailabilityRepository, list);
                 break;
             case "shoppingcart":
-                strategy = shoppingCartStrategy;
+                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, list);
                 break;
             case "giftlist":
-                strategy = giftListStrategy;
+                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, list);
                 break;
             default:
                 return ResponseEntity.badRequest().build();
         }
 
         try {
-            ProductList result = listService.addProduct(clientId, listType, strategy, request);
+            ProductList result = listService.addProduct(strategy, request);
             ListResponseDTO response = new ListResponseDTO();
             listService.setResponseDTO(response, result, listType);
             return ResponseEntity.ok(response);
@@ -82,27 +88,33 @@ public class ListController {
             @RequestBody ListRequestDTO request) {
 
         IListStrategy strategy;
+        ProductList list;
+        try{
+            list = listService.getList(clientId, listType);
+        } catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
-                strategy = wishlistStrategy;
+                strategy = new WishlistStrategy(productAvailabilityRepository, list);
                 break;
             case "savedforlater":
-                strategy = savedForLaterStrategy;
+                strategy = new SavedForLaterStrategy(productAvailabilityRepository, list);
                 break;
             case "shoppingcart":
-                strategy = shoppingCartStrategy;
+                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, list);
                 break;
             case "giftlist":
-                strategy = giftListStrategy;
+                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, list);
                 break;
             default:
                 return ResponseEntity.badRequest().build();
         }
 
         try {
-            ProductList result = listService.removeProduct(clientId, listType, strategy, request);
+            ProductList result = listService.removeProduct(strategy, request);
             ListResponseDTO response = new ListResponseDTO();
             listService.setResponseDTO(response, result, listType);
             return ResponseEntity.ok(response);

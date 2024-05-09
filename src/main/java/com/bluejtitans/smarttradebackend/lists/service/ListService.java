@@ -17,37 +17,30 @@ import java.util.List;
 @Service
 public class ListService {
     private final ProductListRepository listRepository;
-    private final IListStrategy listStrategy;
+    private IListStrategy listStrategy;
 
     @Autowired
-    public ListService(ProductListRepository listRepository, IListStrategy listStrategy){
+    public ListService(ProductListRepository listRepository){
         this.listRepository = listRepository;
-        this.listStrategy = listStrategy;
     }
     public ProductList getList(String clientId, String listType) throws Exception{
-        if(listType.equals("wishlist")){
-            return listRepository.findWishlistByClientId(clientId).get();
-        } else if(listType.equals("savedforlater")){
-            return listRepository.findSavedForLaterByClientId(clientId).get();
-        } else if(listType.equals("shoppingcart")) {
-            return listRepository.findShoppingCartByClientId(clientId).get();
-        } else if (listType.equals("giftList")) {
-            return listRepository.findGiftListByClientId(clientId).get();
-        } else{
-            throw new ListDoesntExistException("No existe la lista");
-        }
+        return switch (listType) {
+            case "wishlist" -> listRepository.findWishlistByClientEmail(clientId).get();
+            case "savedforlater" -> listRepository.findSavedForLaterByClientEmail(clientId).get();
+            case "shoppingcart" -> listRepository.findShoppingCartByClientEmail(clientId).get();
+            case "giftList" -> listRepository.findGiftListByClientEmail(clientId).get();
+            default -> throw new ListDoesntExistException("No existe la lista");
+        };
     }
 
-    public ProductList addProduct(String clientId, String listType, IListStrategy listStrategy, ListRequestDTO request) throws Exception {
-        ProductList list = getList(clientId, listType);
-        ProductList modifiedList = listStrategy.addProduct(list, request);
+    public ProductList addProduct(IListStrategy listStrategy, ListRequestDTO request) throws Exception {
+        ProductList modifiedList = listStrategy.addProduct(request);
         listRepository.save(modifiedList);
         return modifiedList;
     }
 
-    public ProductList removeProduct(String clientId, String listType, IListStrategy listStrategy, ListRequestDTO request) throws Exception {
-        ProductList list = getList(clientId, listType);
-        ProductList modifiedList = listStrategy.removeProduct(list, request);
+    public ProductList removeProduct(IListStrategy listStrategy, ListRequestDTO request) throws Exception {
+        ProductList modifiedList = listStrategy.removeProduct(request);
         listRepository.save(modifiedList);
         return modifiedList;
     }
