@@ -19,7 +19,10 @@ public class ShoppingCartProduct {
     private ShoppingCart shoppingCart;
 
     @ManyToOne
-    @JoinColumn(name = "product_availability_id")
+    @JoinColumns({
+            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+            @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
+    })
     private ProductAvailability productAvailability;
 
     @Column(name = "quantity")

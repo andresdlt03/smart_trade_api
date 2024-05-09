@@ -6,34 +6,44 @@ import lombok.Getter;
 import lombok.Setter;
 import com.bluejtitans.smarttradebackend.products.model.Product;
 import java.time.LocalDate;
-@Getter
-@Setter
-@Entity
-@Table(name = "Person_Gift")
-public class PersonGift {
+import java.util.ArrayList;
+import java.util.List;
 
-    @Column(name = "receiver")
-    private String receiver;
+    @Getter
+    @Setter
+    @Entity
+    @Table(name = "Person_Gift")
+    public class PersonGift {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Column(name = "receiver")
+        private String receiver;
 
-    @ManyToOne
-    @JoinColumn(name = "product_availability_id")
-    private ProductAvailability productAvailability;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "giftList_id")
-    private GiftList giftList;
+        @ManyToMany
+        @JoinTable(
+                name = "person_gift_product_availability",
+                joinColumns = @JoinColumn(name = "person_gift_id"),
+                inverseJoinColumns = {
+                        @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+                        @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
+                }
+        )
+        private List<ProductAvailability> productAvailabilities = new ArrayList<>();
 
-    @Column(name = "date", nullable = true)
-    private LocalDate date;
+        @ManyToOne
+        @JoinColumn(name = "giftList_id")
+        private GiftList giftList;
 
-    public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
-        this.receiver = receiver;
-        this.giftList = giftList;
-        this.productAvailability = productAvailability;
-        this.date = date;
+        @Column(name = "date", nullable = true)
+        private LocalDate date;
+
+        public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
+            this.receiver = receiver;
+            this.giftList = giftList;
+            productAvailabilities.add(productAvailability);
+            this.date = date;
+        }
     }
-}
