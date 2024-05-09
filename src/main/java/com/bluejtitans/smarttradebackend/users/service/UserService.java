@@ -42,6 +42,8 @@ public class UserService {
                 initializeLists((Client) user);
             }
             userRepository.save(user);
+            initializeLists((Client) user);
+            userRepository.save(user);
         } catch(UserAlreadyExistsException e) {
             registerFailed.setErrorMessage(e.getMessage());
             return ResponseEntity.badRequest().body(registerFailed);
@@ -82,6 +84,23 @@ public class UserService {
             loginSuccess.setUserType("admin");
         }
         return loginSuccess;
+    }
+
+    public void initializeLists(Client client){
+        Wishlist wishlist = new Wishlist(client);
+        SavedForLater savedForLater = new SavedForLater(client);
+        ShoppingCart shoppingCart = new ShoppingCart(client);
+        GiftList giftList = new GiftList(client);
+
+        productListRepository.save(wishlist);
+        productListRepository.save(savedForLater);
+        productListRepository.save(shoppingCart);
+        productListRepository.save(giftList);
+
+        client.setWishlist(wishlist);
+        client.setSavedForLater(savedForLater);
+        client.setShoppingCart(shoppingCart);
+        client.setGiftList(giftList);
     }
 
     public void initializeLists(Client client){
