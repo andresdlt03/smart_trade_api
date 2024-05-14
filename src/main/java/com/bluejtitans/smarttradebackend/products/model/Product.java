@@ -1,6 +1,5 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
-import com.bluejtitans.smarttradebackend.lists.model.SavedForLater;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +25,8 @@ public class Product implements IProduct{
     private Boolean verified = false;
     @Column(name = "category")
     private String category;
-    @Column(name = "min_price")
-    private Double minPrice = 0.0;
+    @Column(name = "price")
+    private Double price = 0.0;
 
     public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;

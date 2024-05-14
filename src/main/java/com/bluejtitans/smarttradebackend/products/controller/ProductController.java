@@ -2,9 +2,8 @@ package com.bluejtitans.smarttradebackend.products.controller;
 
 import com.bluejtitans.smarttradebackend.exception.InvalidProductFormatException;
 import com.bluejtitans.smarttradebackend.exception.UserNotRegisteredException;
-import com.bluejtitans.smarttradebackend.products.dto.requests.AvailabilityDTO;
-import com.bluejtitans.smarttradebackend.products.dto.requests.InfoDTO;
-import com.bluejtitans.smarttradebackend.products.dto.requests.ProductDTO;
+import com.bluejtitans.smarttradebackend.products.model.requests.ProductDTO;
+import com.bluejtitans.smarttradebackend.products.model.requests.CreateProductRequest;
 import com.bluejtitans.smarttradebackend.products.dto.responses.ProductAvailabilityBySeller;
 import com.bluejtitans.smarttradebackend.products.dto.responses.ProductAvailabilityWithCategory;
 import com.bluejtitans.smarttradebackend.products.dto.responses.ProductWithCategory;
@@ -29,15 +28,14 @@ public class ProductController {
     public ProductController(ProductService productService) { this.productService = productService; }
 
     @PostMapping("/{productCategory}")
-    public ResponseEntity<String> createProduct(@PathVariable String productCategory, @RequestBody ProductDTO productBody){
-        InfoDTO productInfoDTO = productBody.info;
-        AvailabilityDTO productAvailabilityDTO = productBody.availability;
+    public ResponseEntity<String> createProduct(@PathVariable String productCategory, @RequestBody CreateProductRequest requestBody){
+        ProductDTO productDTO = requestBody.getInfo();
         try {
-            Product product = (Product) ProductFactory.createProductFromDTO(productCategory, productInfoDTO);
+            Product product = (Product) ProductFactory.createProductFromDTO(productCategory, productDTO);
             ProductAvailability productAvailability = new ProductAvailability();
-            productAvailability.setPrice(productAvailabilityDTO.getPrice());
-            productAvailability.setStock(productAvailabilityDTO.getStock());
-            productService.saveProduct(product, productAvailability, productAvailabilityDTO.getSellerEmail());
+            productAvailability.setPrice(requestBody.getPrice());
+            productAvailability.setStock(requestBody.getStock());
+            productService.saveProduct(product, productAvailability, requestBody.getSellerEmail());
             return ResponseEntity.created(null).body(product.getName());
         } catch(UserNotRegisteredException | InvalidProductFormatException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
