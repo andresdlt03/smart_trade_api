@@ -70,9 +70,9 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<String> verifyProduct(@PathVariable String productId, @RequestBody VerifyProductRequest verifyProductRequest) {
+    public ResponseEntity<String> verifyProduct(@PathVariable String productId, @RequestBody Boolean verify) {
         try {
-            productService.setProductVerification(productId, verifyProductRequest.getVerify());
+            productService.setProductVerification(productId, verify);
             return ResponseEntity.ok("Product " + productId + " verified");
         } catch(RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
