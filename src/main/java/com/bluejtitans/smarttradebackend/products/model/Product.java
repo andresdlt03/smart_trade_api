@@ -1,6 +1,5 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
-import com.bluejtitans.smarttradebackend.lists.model.SavedForLater;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +37,56 @@ public class Product implements IProduct{
     }
 
     public Product() {
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void setName(String name) {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public void setDescription(String description) {
+
+    }
+
+    @Override
+    public String getDataSheet() {
+        return null;
+    }
+
+    @Override
+    public void setDataSheet(String dataSheet) {
+
+    }
+
+    @Override
+    public List<String> getPhotos() {
+        return null;
+    }
+
+    @Override
+    public void setPhotos(List<String> photos) {
+
+    }
+
+    @Override
+    public String getCategory() {
+        return null;
+    }
+
+    @Override
+    public void setCategory(String category) {
 
     }
 }

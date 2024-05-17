@@ -1,7 +1,6 @@
 package com.bluejtitans.smarttradebackend.users.controller;
 
-import com.bluejtitans.smarttradebackend.lists.model.ProductList;
-import com.bluejtitans.smarttradebackend.lists.service.ListService;
+
 import com.bluejtitans.smarttradebackend.users.http.login.LoginCredentials;
 import com.bluejtitans.smarttradebackend.users.http.login.LoginRequest;
 import com.bluejtitans.smarttradebackend.users.http.login.LoginResponse;
