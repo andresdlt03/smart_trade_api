@@ -28,7 +28,7 @@ public class ListService {
             case "wishlist" -> listRepository.findWishlistByClientEmail(clientId).get();
             case "savedforlater" -> listRepository.findSavedForLaterByClientEmail(clientId).get();
             case "shoppingcart" -> listRepository.findShoppingCartByClientEmail(clientId).get();
-            case "giftList" -> listRepository.findGiftListByClientEmail(clientId).get();
+            case "giftlist" -> listRepository.findGiftListByClientEmail(clientId).get();
             default -> throw new ListDoesntExistException("No existe la lista");
         };
     }
@@ -68,7 +68,7 @@ public class ListService {
                 }
                 response.setProducts(productDTOList);
                 break;
-            case "shoppingCart":
+            case "shoppingcart":
                 ShoppingCart shoppingCart = (ShoppingCart) list;
                 List<ShoppingCartProduct> shoppingProductList = shoppingCart.getShoppingCartProducts();
                 List<ShoppingProductDTO> shoppingProductDTOList = response.getCartProducts();
@@ -80,15 +80,18 @@ public class ListService {
                 response.setIVA(shoppingCart.getIva());
                 response.setProductsPrice(shoppingCart.getProductsPrice());
                 break;
-            case "giftList":
+            case "giftlist":
                 GiftList giftList = (GiftList) list;
                 List<PersonGift> personGiftList = giftList.getPersonGifts();
                 List<GiftProductDTO> giftProductDTOList = response.getGiftProducts();
                 for (PersonGift pg : personGiftList) {
-                    List<ProductAvailability> productAvailabilities = pg.getProductAvailabilities();
-                    for (ProductAvailability pa : productAvailabilities) {
-                        giftProductDTOList.add(new GiftProductDTO(pg.getDate(), pg.getReceiver(), pa.getProduct(), pa.getSeller().getName(), pa.getPrice()));
+                    //List<ProductAvailability> productAvailabilities = pg.getProductAvailabilities();
+                    List<PersonGiftProductAvailability> personGiftProductAvailabilities = pg.getPersonGiftProductAvailabilities();
+                    GiftProductDTO giftProductDTO = new GiftProductDTO(pg.getReceiver());
+                    for (PersonGiftProductAvailability pgpa : personGiftProductAvailabilities) {
+                        giftProductDTO.getPersonGifts().add(new PersonGiftsDTO(pgpa.getProductAvailability().getProduct(), pgpa.getProductAvailability().getSeller().getName(), pgpa.getProductAvailability().getPrice(), pgpa.getDate()));
                     }
+                    giftProductDTOList.add(giftProductDTO);
                 }
                 response.setGiftProducts(giftProductDTOList);
                 break;

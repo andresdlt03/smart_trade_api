@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public abstract class ProductList {
+public class ProductList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -17,4 +17,8 @@ public abstract class ProductList {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    public ProductList(){
+
+    }
 }

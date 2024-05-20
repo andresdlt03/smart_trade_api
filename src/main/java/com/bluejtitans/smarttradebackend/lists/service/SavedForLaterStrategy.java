@@ -21,7 +21,7 @@ public class SavedForLaterStrategy implements IListStrategy{
     private SavedForLater savedForLater;
 
     @Autowired
-    public SavedForLaterStrategy(ProductAvailabilityRepository productAvailabilityRepository,  ProductList list) {
+    public SavedForLaterStrategy(ProductAvailabilityRepository productAvailabilityRepository,  SavedForLater list) {
         this.productAvailabilityRepository = productAvailabilityRepository;
         this.savedForLater = (SavedForLater) list;
     }
@@ -55,7 +55,7 @@ public class SavedForLaterStrategy implements IListStrategy{
         }
     }
 
-    public boolean productInList(ProductAvailability pa ){
+    public boolean productInList(ProductAvailability pa){
         return savedForLater.getProductAvailabilities().contains(pa);
     }
 }

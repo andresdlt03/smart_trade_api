@@ -1,7 +1,7 @@
 package com.bluejtitans.smarttradebackend.lists.controller;
 
 import com.bluejtitans.smarttradebackend.lists.DTO.*;
-import com.bluejtitans.smarttradebackend.lists.model.ProductList;
+import com.bluejtitans.smarttradebackend.lists.model.*;
 import com.bluejtitans.smarttradebackend.lists.repository.GiftPersonRepository;
 import com.bluejtitans.smarttradebackend.lists.repository.ShoppingCartRepository;
 import com.bluejtitans.smarttradebackend.lists.service.*;
@@ -54,16 +54,20 @@ public class ListController {
         //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
-                strategy = new WishlistStrategy(productAvailabilityRepository, list);
+                Wishlist wishlist = (Wishlist) list;
+                strategy = new WishlistStrategy(productAvailabilityRepository, wishlist);
                 break;
             case "savedforlater":
-                strategy = new SavedForLaterStrategy(productAvailabilityRepository, list);
+                SavedForLater savedForLater = (SavedForLater) list;
+                strategy = new SavedForLaterStrategy(productAvailabilityRepository, savedForLater);
                 break;
             case "shoppingcart":
-                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, list);
+                ShoppingCart shoppingCart = (ShoppingCart) list;
+                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, shoppingCart);
                 break;
             case "giftlist":
-                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, list);
+                GiftList giftList = (GiftList) list;
+                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, giftList);
                 break;
             default:
                 return ResponseEntity.badRequest().build();
@@ -98,16 +102,20 @@ public class ListController {
         //Determines the Strategy to use depending on the type of list
         switch (listType) {
             case "wishlist":
-                strategy = new WishlistStrategy(productAvailabilityRepository, list);
+                Wishlist wishlist = (Wishlist) list;
+                strategy = new WishlistStrategy(productAvailabilityRepository, wishlist);
                 break;
             case "savedforlater":
-                strategy = new SavedForLaterStrategy(productAvailabilityRepository, list);
+                SavedForLater savedForLater = (SavedForLater) list;
+                strategy = new SavedForLaterStrategy(productAvailabilityRepository, savedForLater);
                 break;
             case "shoppingcart":
-                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, list);
+                ShoppingCart shoppingCart = (ShoppingCart) list;
+                strategy = new ShoppingCartStrategy(productAvailabilityRepository, shoppingCartRepository, shoppingCart);
                 break;
             case "giftlist":
-                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, list);
+                GiftList giftList = (GiftList) list;
+                strategy = new GiftListStrategy(productAvailabilityRepository, giftPersonRepository, giftList);
                 break;
             default:
                 return ResponseEntity.badRequest().build();

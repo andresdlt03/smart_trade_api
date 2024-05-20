@@ -6,11 +6,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import com.bluejtitans.smarttradebackend.products.model.Product;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@Component
 @Table(name = "Wishlist")
 public class Wishlist extends ProductList {
     @ManyToMany
@@ -28,5 +31,9 @@ public class Wishlist extends ProductList {
 
     public Wishlist(Client client){
         this.setClient(client);
+    }
+
+    public Wishlist(){
+
     }
 }

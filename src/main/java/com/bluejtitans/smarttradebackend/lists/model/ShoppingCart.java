@@ -5,11 +5,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import com.bluejtitans.smarttradebackend.products.model.Product;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@Component
 @Table(name = "Shopping_Cart")
 public class ShoppingCart extends ProductList {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
@@ -29,5 +32,9 @@ public class ShoppingCart extends ProductList {
         this.iva = 0.0;
         this.productsPrice = 0.0;
         this.totalPrice = 0.0;
+    }
+
+    public ShoppingCart(){
+
     }
 }
