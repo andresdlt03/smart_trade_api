@@ -42,8 +42,6 @@ public class UserService {
                 initializeLists((Client) user);
             }
             userRepository.save(user);
-            initializeLists((Client) user);
-            userRepository.save(user);
         } catch(UserAlreadyExistsException e) {
             registerFailed.setErrorMessage(e.getMessage());
             return ResponseEntity.badRequest().body(registerFailed);
@@ -67,40 +65,16 @@ public class UserService {
             return ResponseEntity.badRequest().body(loginFailed);
         }
 
-        LoginSuccess loginSuccess = getLoginSuccess(loginCredentials, user);
-        return ResponseEntity.ok(loginSuccess);
-    }
-
-    private static LoginSuccess getLoginSuccess(LoginCredentials loginCredentials, User user) {
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setEmail(loginCredentials.getEmail());
-        loginSuccess.setFullName(user.getName() + " " + user.getSurname());
         if(user instanceof Client) {
             loginSuccess.setUserType("client");
-            loginSuccess.setFullName(((Client) user).getDeliveryAddress());
         } else if (user instanceof Seller) {
             loginSuccess.setUserType("seller");
         } else if (user instanceof Admin) {
             loginSuccess.setUserType("admin");
         }
-        return loginSuccess;
-    }
-
-    public void initializeLists(Client client){
-        Wishlist wishlist = new Wishlist(client);
-        SavedForLater savedForLater = new SavedForLater(client);
-        ShoppingCart shoppingCart = new ShoppingCart(client);
-        GiftList giftList = new GiftList(client);
-
-        productListRepository.save(wishlist);
-        productListRepository.save(savedForLater);
-        productListRepository.save(shoppingCart);
-        productListRepository.save(giftList);
-
-        client.setWishlist(wishlist);
-        client.setSavedForLater(savedForLater);
-        client.setShoppingCart(shoppingCart);
-        client.setGiftList(giftList);
+        return ResponseEntity.ok(loginSuccess);
     }
 
     public void initializeLists(Client client){
