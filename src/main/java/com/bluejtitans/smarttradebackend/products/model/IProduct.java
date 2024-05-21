@@ -11,4 +11,6 @@ public interface IProduct {
     public void setDataSheet(String dataSheet);
     public List<String> getPhotos();
     public void setPhotos(List<String> photos);
+    public String getCategory();
+    public void setCategory(String category);
 }
