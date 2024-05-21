@@ -1,5 +1,6 @@
 package com.bluejtitans.smarttradebackend.products.model.requests;
 
+import com.bluejtitans.smarttradebackend.products.model.Product;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,10 +1,9 @@
 package com.bluejtitans.smarttradebackend.lists.DTO;
 
-import com.bluejtitans.smarttradebackend.products.model.Product;
-import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bluejtitans.smarttradebackend.lists.DTO.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 

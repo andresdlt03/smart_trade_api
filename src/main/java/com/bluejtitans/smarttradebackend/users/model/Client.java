@@ -1,6 +1,6 @@
 package com.bluejtitans.smarttradebackend.users.model;
 
-import jakarta.annotation.Nullable;
+import com.bluejtitans.smarttradebackend.lists.model.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +26,16 @@ public class Client extends User {
 
     @Column(name = "credit_card", nullable = true)
     private String creditCard;
+
+    @OneToOne
+    private Wishlist wishlist;
+
+    @OneToOne
+    private SavedForLater savedForLater;
+
+    @OneToOne
+    private ShoppingCart shoppingCart;
+
+    @OneToOne
+    private GiftList giftList;
 }
