@@ -42,6 +42,7 @@ public class Product implements IProduct{
 
     }
 
+
     public Double getLastHistoryPrice() {
         return historyPrice.get(historyPrice.size() - 1);
     }
