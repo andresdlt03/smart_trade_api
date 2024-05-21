@@ -39,15 +39,19 @@ public class ProductService {
             if (p.isPresent()) {
                 productAvailability.setProduct(p.get());
                 productAvailability.setSeller(seller);
-                productAvailabilityRepository.save(productAvailability);
+                if(productAvailability.getPrice() < p.get().getPrice()) {
+                    p.get().setPrice(productAvailability.getPrice());
+                    productRepository.save(p.get());
+                }
             }
             // If product is not published yet, create a new product and availability
             else {
                 productAvailability.setProduct(product);
                 productAvailability.setSeller(seller);
+                product.setPrice(productAvailability.getPrice());
                 productRepository.save(product);
-                productAvailabilityRepository.save(productAvailability);
             }
+            productAvailabilityRepository.save(productAvailability);
         }
         catch (UserNotRegisteredException e) {
             throw e;
