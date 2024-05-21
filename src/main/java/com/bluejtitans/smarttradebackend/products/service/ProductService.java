@@ -43,12 +43,17 @@ public class ProductService {
                     p.get().setPrice(productAvailability.getPrice());
                     productRepository.save(p.get());
                 }
+                if(productAvailability.getPrice() < p.get().getLastHistoryPrice()) {
+                    p.get().addToHistoryPrice(productAvailability.getPrice());
+                    productRepository.save(p.get());
+                }
             }
             // If product is not published yet, create a new product and availability
             else {
                 productAvailability.setProduct(product);
                 productAvailability.setSeller(seller);
                 product.setPrice(productAvailability.getPrice());
+                product.addToHistoryPrice(productAvailability.getPrice());
                 productRepository.save(product);
             }
             productAvailabilityRepository.save(productAvailability);
