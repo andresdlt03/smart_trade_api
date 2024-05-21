@@ -1,10 +1,7 @@
-package com.bluejtitans.smarttradebackend.users.http.register;
+package com.bluejtitans.smarttradebackend.users.controller.http.register;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @Getter
 @Setter

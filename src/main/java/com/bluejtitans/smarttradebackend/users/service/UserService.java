@@ -1,6 +1,12 @@
 package com.bluejtitans.smarttradebackend.users.service;
 
 import com.bluejtitans.smarttradebackend.exception.UserAlreadyExistsException;
+<<<<<<< HEAD
+import com.bluejtitans.smarttradebackend.users.controller.http.login.*;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterFailed;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterResponse;
+import com.bluejtitans.smarttradebackend.users.controller.http.register.RegisterSuccess;
+=======
 import com.bluejtitans.smarttradebackend.lists.model.GiftList;
 import com.bluejtitans.smarttradebackend.lists.model.SavedForLater;
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCart;
@@ -10,6 +16,7 @@ import com.bluejtitans.smarttradebackend.users.http.login.*;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterFailed;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterResponse;
 import com.bluejtitans.smarttradebackend.users.http.register.RegisterSuccess;
+>>>>>>> dcb5af11a9c026734d6ebec933b62f8465d96d00
 import com.bluejtitans.smarttradebackend.users.model.Admin;
 import com.bluejtitans.smarttradebackend.users.model.Client;
 import com.bluejtitans.smarttradebackend.users.model.Seller;
