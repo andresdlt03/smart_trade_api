@@ -22,7 +22,7 @@ public class ShoppingCartStrategy implements IListStrategy{
     private ShoppingCart shoppingCart;
 
     @Autowired
-    public ShoppingCartStrategy(ProductAvailabilityRepository productAvailabilityRepository, ShoppingCartRepository shoppingCartProductRepository, ProductList list){
+    public ShoppingCartStrategy(ProductAvailabilityRepository productAvailabilityRepository, ShoppingCartRepository shoppingCartProductRepository, ShoppingCart list){
         this.productAvailabilityRepository = productAvailabilityRepository;
         this.shoppingCartProductRepository = shoppingCartProductRepository;
         this.shoppingCart = (ShoppingCart) list;
@@ -31,12 +31,16 @@ public class ShoppingCartStrategy implements IListStrategy{
     public ProductList addProduct(ListRequestDTO request) throws Exception {
         ProductAvailability pa = productAvailabilityRepository.findProductAvailabilityByProductIdAndSellerId(request.getProductId(), request.getSellerEmail());
         if(pa != null){
-            ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(shoppingCart, pa, request.getQuantity());
-            pa.getShoppingCartProducts().add(shoppingCartProduct);
-            shoppingCart.getShoppingCartProducts().add(shoppingCartProduct);
+            ShoppingCartProduct shoppingCartProduct = productInList(pa);
+            if(shoppingCartProduct != null){
+                shoppingCartProduct.setQuantity(request.getQuantity());
+            } else{
+                shoppingCartProduct = new ShoppingCartProduct(shoppingCart, pa, request.getQuantity());
+                pa.getShoppingCartProducts().add(shoppingCartProduct);
+                shoppingCart.getShoppingCartProducts().add(shoppingCartProduct);
+            }
             addPrice(pa.getPrice());
             shoppingCartProductRepository.save(shoppingCartProduct);
-            productAvailabilityRepository.save(pa);
             return shoppingCart;
         } else{
             throw new ProductAvailabilityNotFoundException("Product not found");
@@ -47,11 +51,13 @@ public class ShoppingCartStrategy implements IListStrategy{
     public ProductList removeProduct(ListRequestDTO request) throws Exception {
         Optional<ShoppingCartProduct> targetProduct = shoppingCart.getShoppingCartProducts().stream().filter(cp -> cp.getProductAvailability().getProduct().getName().equals(request.getProductId())).findFirst();
         if(targetProduct.isPresent()){
-            targetProduct.get().getProductAvailability().getShoppingCartProducts().remove(targetProduct.get());
-            shoppingCart.getShoppingCartProducts().remove(targetProduct.get());
-            removePrice(request.getQuantity());
+            targetProduct.get().setQuantity(request.getQuantity());
+            if(request.getQuantity() == 0){
+                targetProduct.get().getProductAvailability().getShoppingCartProducts().remove(targetProduct.get());
+                shoppingCart.getShoppingCartProducts().remove(targetProduct.get());
+            }
+            removePrice(targetProduct.get().getProductAvailability().getPrice());
             shoppingCartProductRepository.delete(targetProduct.get());
-            productAvailabilityRepository.save(targetProduct.get().getProductAvailability());
             return shoppingCart;
         } else{
             throw new ProductNotInListException("Product not found in Shopping Cart");
@@ -74,5 +80,14 @@ public class ShoppingCartStrategy implements IListStrategy{
         shoppingCart.setTotalPrice(newTotalPrice);
         shoppingCart.setProductsPrice(newProductPrice);
         shoppingCart.setIva(newIVA);
+    }
+
+    public ShoppingCartProduct productInList(ProductAvailability pa){
+        for(ShoppingCartProduct scp : shoppingCart.getShoppingCartProducts()){
+            if(scp.getProductAvailability().equals(pa)){
+                return scp;
+            }
+        }
+        return null;
     }
 }

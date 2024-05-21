@@ -37,8 +37,10 @@ public class UserService {
         try {
             if(userRepository.existsById(user.getEmail()))
                 throw new UserAlreadyExistsException("Ya existe un usuario con el correo " + user.getEmail());
-            userRepository.save(user);
-            initializeLists((Client) user);
+            if (user instanceof Client){
+                userRepository.save(user);
+                initializeLists((Client) user);
+            }
             userRepository.save(user);
         } catch(UserAlreadyExistsException e) {
             registerFailed.setErrorMessage(e.getMessage());

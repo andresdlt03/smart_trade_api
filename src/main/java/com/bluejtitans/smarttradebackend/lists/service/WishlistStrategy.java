@@ -22,7 +22,7 @@ public class WishlistStrategy implements IListStrategy{
     private Wishlist wishlist;
 
     @Autowired
-    public WishlistStrategy(ProductAvailabilityRepository productAvailabilityRepository, ProductList list){
+    public WishlistStrategy(ProductAvailabilityRepository productAvailabilityRepository, Wishlist list){
         this.productAvailabilityRepository = productAvailabilityRepository;
         this.wishlist = (Wishlist) list;
     }

@@ -22,7 +22,7 @@ import java.util.List;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @ManyToMany
+        /*@ManyToMany
         @JoinTable(
                 name = "person_gift_product_availability",
                 joinColumns = @JoinColumn(name = "person_gift_id"),
@@ -31,19 +31,31 @@ import java.util.List;
                         @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
                 }
         )
-        private List<ProductAvailability> productAvailabilities = new ArrayList<>();
+        private List<ProductAvailability> productAvailabilities = new ArrayList<>();*/
+
+        @OneToMany(mappedBy = "personGift", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<PersonGiftProductAvailability> personGiftProductAvailabilities = new ArrayList<>();
 
         @ManyToOne
         @JoinColumn(name = "giftList_id")
         private GiftList giftList;
 
-        @Column(name = "date", nullable = true)
-        private LocalDate date;
+        /*@Column(name = "date", nullable = true)
+        private LocalDate date;*/
 
-        public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
+        /*public PersonGift(String receiver, GiftList giftList, ProductAvailability productAvailability, LocalDate date){
             this.receiver = receiver;
             this.giftList = giftList;
             productAvailabilities.add(productAvailability);
             this.date = date;
+        }*/
+
+        public PersonGift(String receiver, GiftList giftList){
+            this.receiver = receiver;
+            this.giftList = giftList;
+        }
+
+        public PersonGift(){
+
         }
     }

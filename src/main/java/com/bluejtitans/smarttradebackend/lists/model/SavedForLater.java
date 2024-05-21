@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Component
 @Table(name = "Saved_For_Later")
 public class SavedForLater extends ProductList{
     @ManyToMany
@@ -34,5 +36,9 @@ public class SavedForLater extends ProductList{
 
     public SavedForLater(Client client){
         this.setClient(client);
+    }
+
+    public SavedForLater(){
+
     }
 }

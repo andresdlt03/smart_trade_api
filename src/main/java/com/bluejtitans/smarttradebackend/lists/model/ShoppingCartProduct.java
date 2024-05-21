@@ -33,4 +33,8 @@ public class ShoppingCartProduct {
         this.productAvailability = productAvailability;
         this.quantity = quantity;
     }
+
+    public ShoppingCartProduct(){
+
+    }
 }
