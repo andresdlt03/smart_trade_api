@@ -27,6 +27,8 @@ public class Product implements IProduct{
     private String category;
     @Column(name = "price")
     private Double price = 0.0;
+    @ElementCollection
+    private List<Double> historyPrice = new ArrayList<>();
 
     public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;
@@ -38,5 +40,13 @@ public class Product implements IProduct{
 
     public Product() {
 
+    }
+
+    public Double getLastHistoryPrice() {
+        return historyPrice.get(historyPrice.size() - 1);
+    }
+
+    public void addToHistoryPrice(Double price) {
+        historyPrice.add(price);
     }
 }
