@@ -8,4 +8,6 @@ import lombok.Setter;
 public class LoginSuccess implements LoginResponse{
     private String email;
     private String userType;
+    private String dir;
+    private String fullName;
 }
