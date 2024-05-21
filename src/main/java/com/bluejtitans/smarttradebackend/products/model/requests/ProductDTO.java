@@ -1,4 +1,4 @@
-package com.bluejtitans.smarttradebackend.products.dto.requests;
+package com.bluejtitans.smarttradebackend.products.model.requests;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class InfoDTO {
+public class ProductDTO {
     // common attributes
     public String name;
     public String description;

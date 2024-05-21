@@ -1,11 +1,14 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
+import com.bluejtitans.smarttradebackend.lists.model.ShoppingCartProduct;
 import com.bluejtitans.smarttradebackend.users.model.Seller;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +19,9 @@ public class ProductAvailability {
 
     private int stock;
     private double price;
+
+    @OneToMany(mappedBy = "productAvailability")
+    private List<ShoppingCartProduct> shoppingCartProducts = new ArrayList<>();
 
     public ProductAvailability(Product product, Seller seller, int stock, double price) {
         this.id = new ProductAvailabilityId(product, seller);
@@ -47,11 +53,11 @@ public class ProductAvailability {
 @Getter
 @Setter
 class ProductAvailabilityId implements Serializable {
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "seller_id")
     private Seller seller;
 

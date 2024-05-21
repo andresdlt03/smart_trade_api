@@ -1,4 +1,4 @@
-package com.bluejtitans.smarttradebackend.users.http.login;
+package com.bluejtitans.smarttradebackend.users.controller.http.login;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,4 +8,6 @@ import lombok.Setter;
 public class LoginSuccess implements LoginResponse{
     private String email;
     private String userType;
+    private String dir;
+    private String fullName;
 }

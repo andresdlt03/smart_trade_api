@@ -25,8 +25,10 @@ public class Product implements IProduct{
     private Boolean verified = false;
     @Column(name = "category")
     private String category;
-    @Column(name = "min_price")
-    private Double minPrice = 0.0;
+    @Column(name = "price")
+    private Double price = 0.0;
+    @ElementCollection
+    private List<Double> historyPrice = new ArrayList<>();
 
     public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;
@@ -40,53 +42,12 @@ public class Product implements IProduct{
 
     }
 
-    @Override
-    public String getName() {
-        return null;
+
+    public Double getLastHistoryPrice() {
+        return historyPrice.get(historyPrice.size() - 1);
     }
 
-    @Override
-    public void setName(String name) {
-
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public void setDescription(String description) {
-
-    }
-
-    @Override
-    public String getDataSheet() {
-        return null;
-    }
-
-    @Override
-    public void setDataSheet(String dataSheet) {
-
-    }
-
-    @Override
-    public List<String> getPhotos() {
-        return null;
-    }
-
-    @Override
-    public void setPhotos(List<String> photos) {
-
-    }
-
-    @Override
-    public String getCategory() {
-        return null;
-    }
-
-    @Override
-    public void setCategory(String category) {
-
+    public void addToHistoryPrice(Double price) {
+        historyPrice.add(price);
     }
 }
