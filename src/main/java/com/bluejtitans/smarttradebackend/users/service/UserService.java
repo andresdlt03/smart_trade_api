@@ -65,16 +65,23 @@ public class UserService {
             return ResponseEntity.badRequest().body(loginFailed);
         }
 
+        LoginSuccess loginSuccess = getLoginSuccess(loginCredentials, user);
+        return ResponseEntity.ok(loginSuccess);
+    }
+
+    private static LoginSuccess getLoginSuccess(LoginCredentials loginCredentials, User user) {
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setEmail(loginCredentials.getEmail());
+        loginSuccess.setFullName(user.getName() + " " + user.getSurname());
         if(user instanceof Client) {
             loginSuccess.setUserType("client");
+            loginSuccess.setFullName(((Client) user).getDeliveryAddress());
         } else if (user instanceof Seller) {
             loginSuccess.setUserType("seller");
         } else if (user instanceof Admin) {
             loginSuccess.setUserType("admin");
         }
-        return ResponseEntity.ok(loginSuccess);
+        return loginSuccess;
     }
 
     public void initializeLists(Client client){
