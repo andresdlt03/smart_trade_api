@@ -75,7 +75,7 @@ public class UserService {
         loginSuccess.setFullName(user.getName() + " " + user.getSurname());
         if(user instanceof Client) {
             loginSuccess.setUserType("client");
-            loginSuccess.setFullName(((Client) user).getDeliveryAddress());
+            loginSuccess.setDir(((Client) user).getDeliveryAddress());
         } else if (user instanceof Seller) {
             loginSuccess.setUserType("seller");
         } else if (user instanceof Admin) {
