@@ -31,7 +31,7 @@ public class ProductController {
     public ResponseEntity<String> createProduct(@PathVariable String productCategory, @RequestBody CreateProductRequest requestBody){
         ProductDTO productDTO = requestBody.getInfo();
         try {
-            Product product = (Product) ProductFactory.createProductFromDTO(productCategory, productDTO);
+            Product product = (Product) ProductFactory.createProductFromDTO(productCategory.toLowerCase(), productDTO);
             ProductAvailability productAvailability = new ProductAvailability();
             productAvailability.setPrice(requestBody.getPrice());
             productAvailability.setStock(requestBody.getStock());
