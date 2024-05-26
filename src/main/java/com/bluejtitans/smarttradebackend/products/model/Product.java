@@ -28,7 +28,7 @@ public class Product implements IProduct{
     @Column(name = "price")
     private Double price = 0.0;
     @ElementCollection
-    private List<Double> historyPrice = new ArrayList<>();
+    private List<Double> historyPrices = new ArrayList<>();
 
     public Product(String name, String description, String dataSheet, List<String> photos, String category) {
         this.name = name;
@@ -42,12 +42,21 @@ public class Product implements IProduct{
 
     }
 
-
-    public Double getLastHistoryPrice() {
-        return historyPrice.get(historyPrice.size() - 1);
+    public void addToHistoryPrice(double price) {
+        if (historyPrices == null) {
+            historyPrices = new ArrayList<>();
+        }
+        historyPrices.add(price);
     }
 
-    public void addToHistoryPrice(Double price) {
-        historyPrice.add(price);
+    public double getLastHistoryPrice() {
+        if (historyPrices == null || historyPrices.isEmpty()) {
+            return Double.MAX_VALUE;
+        }
+        return historyPrices.get(historyPrices.size() - 1);
+    }
+
+    public boolean isVerified() {
+        return getVerified();
     }
 }
