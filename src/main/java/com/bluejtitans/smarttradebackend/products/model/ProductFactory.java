@@ -12,7 +12,7 @@ public class ProductFactory {
                             product.getName(),
                             product.getDescription(),
                             product.getDataSheet(),
-                            product.getPhotos(),
+                            product.getPhoto(),
                             product.getConsume(),
                             product.getModel()
                     );
@@ -21,14 +21,14 @@ public class ProductFactory {
                             product.getName(),
                             product.getDescription(),
                             product.getDataSheet(),
-                            product.getPhotos(),
+                            product.getPhoto(),
                             product.getISBN());
             case "food" ->
                     new Food(
                             product.getName(),
                             product.getDescription(),
                             product.getDataSheet(),
-                            product.getPhotos(),
+                            product.getPhoto(),
                             product.getCalories()
                     );
             case "clothes" ->
@@ -36,10 +36,10 @@ public class ProductFactory {
                             product.getName(),
                             product.getDescription(),
                             product.getDataSheet(),
-                            product.getPhotos(),
+                            product.getPhoto(),
                             product.getSize()
                     );
-            default -> throw new InvalidProductFormatException("Invalid product format") {
+            default -> throw new InvalidProductFormatException("Formato del producto no válido") {
             };
         };
     }

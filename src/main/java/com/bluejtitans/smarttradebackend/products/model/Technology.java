@@ -19,12 +19,12 @@ public class Technology extends Product {
     @Column
     private String model;
 
-    public Technology(String name, String description, String dataSheet, List<String> photos, String consume, String model) {
+    public Technology(String name, String description, String dataSheet, byte[] photo, String consume, String model) {
         super(
             name,
             description,
             dataSheet,
-            photos,
+            photo,
                 "technology"
         );
         this.consume = consume;

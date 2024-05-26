@@ -9,8 +9,8 @@ public interface IProduct {
     public void setDescription(String description);
     public String getDataSheet();
     public void setDataSheet(String dataSheet);
-    public List<String> getPhotos();
-    public void setPhotos(List<String> photos);
+    public byte[] getPhoto();
+    public void setPhoto(byte[] photo);
     public String getCategory();
     public void setCategory(String category);
 }

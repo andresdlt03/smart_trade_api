@@ -14,12 +14,12 @@ public class Book extends Product {
     @Column
     private String ISBN;
 
-    public Book(String name, String description, String dataSheet, List<String> photos, String isbn) {
+    public Book(String name, String description, String dataSheet, byte[] photo, String isbn) {
         super(
             name,
             description,
             dataSheet,
-            photos,
+            photo,
                 "book"
         );
         this.ISBN = isbn;

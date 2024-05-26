@@ -40,7 +40,7 @@ public class ProductController {
         } catch(UserNotRegisteredException | InvalidProductFormatException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e){
-            return ResponseEntity.badRequest().body("An unknown error occurred while creating the product");
+            return ResponseEntity.badRequest().body("Ha ocurrido un error inesperado al crear el producto. Inténtelo de nuevo más tarde.");
         }
     }
 

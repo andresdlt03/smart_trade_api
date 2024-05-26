@@ -13,7 +13,7 @@ public class ProductDTO {
     public String name;
     public String description;
     public String dataSheet;
-    public List<String> photos;
+    public byte[] photo;
     public String category;
 
     // technology specific attributes
