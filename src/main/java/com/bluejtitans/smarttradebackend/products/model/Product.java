@@ -19,8 +19,8 @@ public class Product implements IProduct{
     private String description;
     @Column(name = "data_sheet")
     private String dataSheet;
-    @ElementCollection
-    private List<String> photos;
+    @Lob
+    private byte[] photo;
     @Column(name = "verified")
     private Boolean verified = false;
     @Column(name = "category")
@@ -30,11 +30,11 @@ public class Product implements IProduct{
     @ElementCollection
     private List<Double> historyPrice = new ArrayList<>();
 
-    public Product(String name, String description, String dataSheet, List<String> photos, String category) {
+    public Product(String name, String description, String dataSheet, byte[] photo, String category) {
         this.name = name;
         this.description = description;
         this.dataSheet = dataSheet;
-        this.photos = photos;
+        this.photo = photo;
         this.category = category;
     }
 

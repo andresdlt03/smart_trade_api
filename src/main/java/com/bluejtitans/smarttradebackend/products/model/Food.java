@@ -14,12 +14,12 @@ public class Food extends Product {
     @Column
     private String calories;
 
-    public Food(String name, String description, String dataSheet, List<String> photos, String calories) {
+    public Food(String name, String description, String dataSheet, byte[] photo, String calories) {
         super(
             name,
             description,
             dataSheet,
-            photos,
+            photo,
                 "food"
         );
         this.calories = calories;

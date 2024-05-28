@@ -15,12 +15,12 @@ public class Clothes extends Product {
     @Column
     private String size;
 
-    public Clothes(String name, String description, String dataSheet, List<String> photos, String size) {
+    public Clothes(String name, String description, String dataSheet, byte[] photo, String size) {
         super(
                 name,
                 description,
                 dataSheet,
-                photos,
+                photo,
                 "clothes");
         this.size = size;
     }

@@ -31,7 +31,7 @@ public class ProductController {
     public ResponseEntity<String> createProduct(@PathVariable String productCategory, @RequestBody CreateProductRequest requestBody){
         ProductDTO productDTO = requestBody.getInfo();
         try {
-            Product product = (Product) ProductFactory.createProductFromDTO(productCategory, productDTO);
+            Product product = (Product) ProductFactory.createProductFromDTO(productCategory.toLowerCase(), productDTO);
             ProductAvailability productAvailability = new ProductAvailability();
             productAvailability.setPrice(requestBody.getPrice());
             productAvailability.setStock(requestBody.getStock());
@@ -40,7 +40,7 @@ public class ProductController {
         } catch(UserNotRegisteredException | InvalidProductFormatException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e){
-            return ResponseEntity.badRequest().body("An unknown error occurred while creating the product");
+            return ResponseEntity.badRequest().body("Ha ocurrido un error inesperado al crear el producto. Inténtelo de nuevo más tarde.");
         }
     }
 
