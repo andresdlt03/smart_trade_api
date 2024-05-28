@@ -1,6 +1,7 @@
 package com.bluejtitans.smarttradebackend.products.model;
 
 import com.bluejtitans.smarttradebackend.lists.model.ShoppingCartProduct;
+import com.bluejtitans.smarttradebackend.orders.models.OrderProduct;
 import com.bluejtitans.smarttradebackend.users.model.Seller;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class ProductAvailability {
 
     @OneToMany(mappedBy = "productAvailability")
     private List<ShoppingCartProduct> shoppingCartProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productAvailability")
+    private List<OrderProduct> reviewlist;
 
     public ProductAvailability(Product product, Seller seller, int stock, double price) {
         this.id = new ProductAvailabilityId(product, seller);
