@@ -48,7 +48,7 @@ public class ProductService {
                     productRepository.save(p.get());
                 }
             }
-            // If product is not published yet, create a new product and availability
+
             else {
                 productAvailability.setProduct(product);
                 productAvailability.setSeller(seller);

@@ -45,7 +45,7 @@ public class ListService {
         return modifiedList;
     }
 
-    public void setResponseDTO(ListResponseDTO response, ProductList list, String listType){
+    public void setResponseDTO(ListResponseDTO response, ProductList list, String listType) {
         List<ProductAvailability> paList;
         List<ProductDTO> productDTOList;
 
@@ -85,7 +85,6 @@ public class ListService {
                 List<PersonGift> personGiftList = giftList.getPersonGifts();
                 List<GiftProductDTO> giftProductDTOList = response.getGiftProducts();
                 for (PersonGift pg : personGiftList) {
-                    //List<ProductAvailability> productAvailabilities = pg.getProductAvailabilities();
                     List<PersonGiftProductAvailability> personGiftProductAvailabilities = pg.getPersonGiftProductAvailabilities();
                     GiftProductDTO giftProductDTO = new GiftProductDTO(pg.getReceiver());
                     for (PersonGiftProductAvailability pgpa : personGiftProductAvailabilities) {
@@ -100,4 +99,5 @@ public class ListService {
                 break;
         }
     }
+
 }
