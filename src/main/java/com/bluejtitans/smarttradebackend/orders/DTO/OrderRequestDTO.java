@@ -12,6 +12,4 @@ public class OrderRequestDTO {
     private String payment;
     private String shippingAddress;
     private String billingAddress;
-    //private String productsNumber;
-    //private double totalPrice;
 }

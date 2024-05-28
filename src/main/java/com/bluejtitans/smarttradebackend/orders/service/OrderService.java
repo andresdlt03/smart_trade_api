@@ -11,8 +11,6 @@ import com.bluejtitans.smarttradebackend.products.model.ProductAvailability;
 import com.bluejtitans.smarttradebackend.products.repository.ProductAvailabilityRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.bluejtitans.smarttradebackend.users.model.Client;
 import com.bluejtitans.smarttradebackend.users.repository.UserRepository;
@@ -31,7 +29,6 @@ public class OrderService {
     private final ProductListRepository productListRepository;
     private ProductAvailabilityRepository productAvailabilityRepository;
     private OrderState state;
-    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
     @Autowired
     public OrderService(OrderRepository orderRepository, UserRepository userRepository, ProductListRepository productListRepository, ProductAvailabilityRepository productAvailabilityRepository){
         this.orderRepository = orderRepository;
