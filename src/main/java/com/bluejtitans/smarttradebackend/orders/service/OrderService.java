@@ -63,7 +63,6 @@ public class OrderService {
     }
 
     public OrderResponseDTO createOrder(String clientEmail, OrderRequestDTO request) {
-        logger.info("Creating order for client: {}", clientEmail);
         try {
             Client client = (Client) userRepository.findById(clientEmail).orElseThrow(() -> new IllegalArgumentException("Client not found"));
             ShoppingCart shoppingCart = productListRepository.findShoppingCartByClientEmail(clientEmail).orElseThrow(() -> new IllegalArgumentException("Shopping cart not found"));
@@ -81,10 +80,8 @@ public class OrderService {
             setResponseDTO(response, order);
             buyShoppingCart(shoppingCart);
 
-            logger.info("Order created successfully for client: {}", clientEmail);
             return response;
         } catch (Exception e) {
-            logger.error("Error creating order for client: {}", clientEmail, e);
             throw e;  // Rethrow the exception to be handled by the controller
         }
     }
