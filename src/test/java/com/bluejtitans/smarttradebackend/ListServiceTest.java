@@ -33,7 +33,7 @@ class ListServiceTest {
     private ProductListRepository listRepository;
 
     @Mock
-    private IListStrategy listStrategy;
+    private IListStrategy ShoppingCartStrategy;
 
     @InjectMocks
     private ListService listService;
@@ -56,6 +56,8 @@ class ListServiceTest {
 
     @Test
     void testGetList_ListDoesntExist() {
+        when(listRepository.findWishlistByClientEmail("client@example.com")).thenReturn(Optional.empty());
+
         assertThrows(ListDoesntExistException.class, () -> {
             listService.getList("client@example.com", "nonexistent");
         });
@@ -63,30 +65,106 @@ class ListServiceTest {
 
     @Test
     void testAddProduct() throws Exception {
-        ProductList productList = new ProductList();
         ListRequestDTO request = new ListRequestDTO();
+        request.setQuantity(5);
 
-        when(listStrategy.addProduct(request)).thenReturn(productList);
-        when(listRepository.save(productList)).thenReturn(productList);
+        ShoppingCart updatedCart = new ShoppingCart();
+        ShoppingCartProduct updatedCartProduct = createAndGetShoppingCartProduct("Product1", 100.0, 5);
+        updatedCart.setShoppingCartProducts(List.of(updatedCartProduct));
 
-        ProductList result = listService.addProduct(listStrategy, request);
+        when(ShoppingCartStrategy.addProduct(any(ListRequestDTO.class))).thenAnswer(invocation -> {
+            ListRequestDTO req = invocation.getArgument(0);
+            ShoppingCart cart = new ShoppingCart();
+            ShoppingCartProduct cartProduct = createAndGetShoppingCartProduct("Product1", 100.0, req.getQuantity());
+            cart.setShoppingCartProducts(List.of(cartProduct));
+            return cart;
+        });
+        when(listRepository.save(any(ShoppingCart.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        assertEquals(productList, result);
-        verify(listRepository, times(1)).save(productList);
+        ShoppingCart resultCart = (ShoppingCart) listService.addProduct(ShoppingCartStrategy, request);
+
+        assertNotNull(resultCart);
+        assertEquals(1, resultCart.getShoppingCartProducts().size());
+        ShoppingCartProduct resultProduct = resultCart.getShoppingCartProducts().get(0);
+        assertEquals(updatedCartProduct.getQuantity(), resultProduct.getQuantity());
+
+        verify(listRepository, times(1)).save(resultCart);
     }
+
+
+    @Test
+    void testAddProduct1() throws Exception {
+        ListRequestDTO request = new ListRequestDTO();
+        request.setQuantity(10);
+
+        ShoppingCart updatedCart = new ShoppingCart();
+        ShoppingCartProduct updatedCartProduct = createAndGetShoppingCartProduct("Product1", 100.0, 10);
+        updatedCart.setShoppingCartProducts(List.of(updatedCartProduct));
+
+        when(ShoppingCartStrategy.addProduct(any(ListRequestDTO.class))).thenAnswer(invocation -> {
+            ListRequestDTO req = invocation.getArgument(0);
+            ShoppingCart cart = new ShoppingCart();
+            ShoppingCartProduct cartProduct = createAndGetShoppingCartProduct("Product1", 100.0, req.getQuantity());
+            cart.setShoppingCartProducts(List.of(cartProduct));
+            return cart;
+        });
+        when(listRepository.save(any(ShoppingCart.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ShoppingCart resultCart = (ShoppingCart) listService.addProduct(ShoppingCartStrategy, request);
+
+        assertNotNull(resultCart);
+        assertEquals(1, resultCart.getShoppingCartProducts().size());
+        ShoppingCartProduct resultProduct = resultCart.getShoppingCartProducts().get(0);
+        assertEquals(updatedCartProduct.getQuantity(), resultProduct.getQuantity());
+
+        verify(listRepository, times(1)).save(resultCart);
+    }
+
 
     @Test
     void testRemoveProduct() throws Exception {
-        ProductList productList = new ProductList();
+        ShoppingCart shoppingCart = new ShoppingCart();
         ListRequestDTO request = new ListRequestDTO();
+        request.setQuantity(10);
 
-        when(listStrategy.removeProduct(request)).thenReturn(productList);
-        when(listRepository.save(productList)).thenReturn(productList);
+        ShoppingCartProduct shoppingCartProduct = createAndGetShoppingCartProduct("Product1", 100.0, 10);
+        shoppingCart.setShoppingCartProducts(List.of(shoppingCartProduct));
 
-        ProductList result = listService.removeProduct(listStrategy, request);
+        when(ShoppingCartStrategy.removeProduct(any(ListRequestDTO.class))).thenAnswer(invocation -> {
+            ListRequestDTO req = invocation.getArgument(0);
+            ShoppingCart cart = new ShoppingCart();
+            if (shoppingCartProduct.getQuantity() > req.getQuantity()) {
+                ShoppingCartProduct updatedCartProduct = createAndGetShoppingCartProduct(
+                        "Product1", 100.0, shoppingCartProduct.getQuantity() - req.getQuantity());
+                cart.setShoppingCartProducts(List.of(updatedCartProduct));
+            } else {
+                cart.setShoppingCartProducts(new ArrayList<>());
+            }
+            return cart;
+        });
+        when(listRepository.save(any(ShoppingCart.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        assertEquals(productList, result);
-        verify(listRepository, times(1)).save(productList);
+        ShoppingCart resultCart = (ShoppingCart) listService.removeProduct(ShoppingCartStrategy, request);
+
+        assertNotNull(resultCart);
+        assertEquals(0, resultCart.getShoppingCartProducts().size()); // El carrito debería estar vacío
+        verify(listRepository, times(1)).save(resultCart);
+    }
+
+
+
+    private static ShoppingCartProduct createAndGetShoppingCartProduct(String name, double price, int quantity) {
+        Product product = new Product();
+        product.setName(name);
+
+        ProductAvailability productAvailability = new ProductAvailability();
+        productAvailability.setProduct(product);
+        productAvailability.setPrice(price);
+
+        ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
+        shoppingCartProduct.setProductAvailability(productAvailability);
+        shoppingCartProduct.setQuantity(quantity);
+        return shoppingCartProduct;
     }
 
     @Test
@@ -99,7 +177,7 @@ class ListServiceTest {
         listService.setResponseDTO(response, wishlist, "wishlist");
 
         assertEquals(2, response.getProducts().size());
-        assertEquals("Product1", response.getProducts().get(0).getProduct().getName());
+        assertEquals("Prod11123euct1", response.getProducts().get(0).getProduct().getName());
         assertEquals("Seller1", response.getProducts().get(0).getSeller());
         assertEquals(100.0, response.getProducts().get(0).getPrice());
 

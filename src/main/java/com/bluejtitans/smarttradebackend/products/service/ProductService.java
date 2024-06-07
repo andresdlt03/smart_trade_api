@@ -10,7 +10,7 @@ import com.bluejtitans.smarttradebackend.products.repository.ProductAvailability
 import com.bluejtitans.smarttradebackend.products.repository.ProductRepository;
 import com.bluejtitans.smarttradebackend.users.model.Seller;
 import com.bluejtitans.smarttradebackend.users.repository.UserRepository;
-import org.antlr.v4.runtime.misc.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,33 +30,32 @@ public class ProductService {
         this.userRepository = userRepository;
         this.productAvailabilityRepository = productAvailabilityRepository;
     }
-    public void saveProduct(Product product, ProductAvailability productAvailability, String sellerEmail) throws RuntimeException {
+    public void saveProduct(SaveProductRequest saveProductRequest) throws RuntimeException {
         try {
-            Optional<Product> p = productRepository.findById(product.getName());
-            Seller seller = userRepository.findSellerById(sellerEmail);
-            if (seller == null) throw new UserNotRegisteredException("Seller with email " + sellerEmail + " not found");
+            Optional<Product> p = productRepository.findById(saveProductRequest.product().getName());
+            Seller seller = userRepository.findSellerById(saveProductRequest.sellerEmail());
+            if (seller == null) throw new UserNotRegisteredException("Seller with email " + saveProductRequest.sellerEmail() + " not found");
             // If product is already published by another seller, save the new availability information with the existing product
             if (p.isPresent()) {
-                productAvailability.setProduct(p.get());
-                productAvailability.setSeller(seller);
-                if(productAvailability.getPrice() < p.get().getPrice()) {
-                    p.get().setPrice(productAvailability.getPrice());
-                    productRepository.save(p.get());
+                saveProductRequest.productAvailability().setProduct(p.get());
+                saveProductRequest.productAvailability().setSeller(seller);
+                if(saveProductRequest.productAvailability().getPrice() < p.get().getPrice()) {
+                    p.get().setPrice(saveProductRequest.productAvailability().getPrice());
                 }
-                if(productAvailability.getPrice() < p.get().getLastHistoryPrice()) {
-                    p.get().addToHistoryPrice(productAvailability.getPrice());
-                    productRepository.save(p.get());
+                if(saveProductRequest.productAvailability().getPrice() < p.get().getLastHistoryPrice()) {
+                    p.get().addToHistoryPrice(saveProductRequest.productAvailability().getPrice());
                 }
+                productRepository.save(p.get());
             }
 
             else {
-                productAvailability.setProduct(product);
-                productAvailability.setSeller(seller);
-                product.setPrice(productAvailability.getPrice());
-                product.addToHistoryPrice(productAvailability.getPrice());
-                productRepository.save(product);
+                saveProductRequest.productAvailability().setProduct(saveProductRequest.product());
+                saveProductRequest.productAvailability().setSeller(seller);
+                saveProductRequest.product().setPrice(saveProductRequest.productAvailability().getPrice());
+                saveProductRequest.product().addToHistoryPrice(saveProductRequest.productAvailability().getPrice());
+                productRepository.save(saveProductRequest.product());
             }
-            productAvailabilityRepository.save(productAvailability);
+            productAvailabilityRepository.save(saveProductRequest.productAvailability());
         }
         catch (UserNotRegisteredException e) {
             throw e;
@@ -117,5 +116,10 @@ public class ProductService {
             productRepository.save(product.get());
         }
         else throw new RuntimeException("Product with id " + productId + " not found");
+    }
+
+    public record SaveProductRequest(Product product,
+                                            ProductAvailability productAvailability,
+                                            String sellerEmail) {
     }
 }
