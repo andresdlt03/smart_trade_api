@@ -63,12 +63,7 @@ public class UserService {
             loginFailed.setErrorMessage("Credenciales incorrectas. Inténtelo de nuevo.");
             return ResponseEntity.badRequest().body(loginFailed);
         }
-
-        LoginSuccess loginSuccess = getLoginSuccess(loginCredentials, user);
-        return ResponseEntity.ok(loginSuccess);
-    }
-
-    private static LoginSuccess getLoginSuccess(LoginCredentials loginCredentials, User user) {
+        
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setEmail(loginCredentials.getEmail());
         loginSuccess.setFullName(user.getName() + " " + user.getSurname());
@@ -80,8 +75,9 @@ public class UserService {
         } else if (user instanceof Admin) {
             loginSuccess.setUserType("admin");
         }
-        return loginSuccess;
+        return ResponseEntity.ok(loginSuccess);
     }
+
 
     public void initializeLists(Client client){
         Wishlist wishlist = new Wishlist(client);

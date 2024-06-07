@@ -43,7 +43,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testSaveProduct_NewProduct_Success() {
+    void testSaveProduct_NewProduct() {
         Product product = new Product();
         product.setName("Product1");
 
@@ -56,7 +56,7 @@ class ProductServiceTest {
         when(productRepository.findById(product.getName())).thenReturn(Optional.empty());
         when(userRepository.findSellerById(seller.getEmail())).thenReturn(seller);
 
-        productService.saveProduct(product, productAvailability, seller.getEmail());
+        productService.saveProduct(new ProductService.SaveProductRequest(product, productAvailability, seller.getEmail()));
 
         verify(productRepository, times(1)).save(product);
         verify(productAvailabilityRepository, times(1)).save(productAvailability);
@@ -66,29 +66,35 @@ class ProductServiceTest {
     }
 
     @Test
-    void testSaveProduct_ExistingProduct_Success() {
+    void testSaveProduct_ExistingProduct() {
         Product existingProduct = new Product();
         existingProduct.setName("Product1");
         existingProduct.setPrice(150.0);
 
-        ProductAvailability productAvailability = new ProductAvailability();
-        productAvailability.setPrice(100.0);
-        productAvailability.setStock(12);
+        ProductAvailability newProductAvailability = new ProductAvailability();
+        newProductAvailability.setPrice(100.0);
+        newProductAvailability.setStock(12);
 
-        Seller seller = new Seller();
-        seller.setEmail("seller@example.com");
+        Seller existingSeller = new Seller();
+        existingSeller.setEmail("existingSeller@example.com");
+
+        Seller newSeller = new Seller();
+        newSeller.setEmail("newSeller@example.com");
 
         when(productRepository.findById(existingProduct.getName())).thenReturn(Optional.of(existingProduct));
-        when(userRepository.findSellerById(seller.getEmail())).thenReturn(seller);
+        when(userRepository.findSellerById(existingSeller.getEmail())).thenReturn(existingSeller);
+        when(userRepository.findSellerById(newSeller.getEmail())).thenReturn(newSeller);
 
-        productService.saveProduct(existingProduct, productAvailability, seller.getEmail());
+        productService.saveProduct(new ProductService.SaveProductRequest(existingProduct, newProductAvailability, newSeller.getEmail()));
 
-        verify(productRepository, times(2)).save(existingProduct);
-        verify(productAvailabilityRepository, times(1)).save(productAvailability);
+        verify(productRepository, times(1)).save(existingProduct);
+        verify(productAvailabilityRepository, times(1)).save(newProductAvailability);
 
-        assertEquals(existingProduct, productAvailability.getProduct());
-        assertEquals(seller, productAvailability.getSeller());
+        assertEquals(existingProduct, newProductAvailability.getProduct());
+        assertEquals(newSeller, newProductAvailability.getSeller());
+        assertEquals(100.0, newProductAvailability.getPrice());
     }
+
 
 
     @Test
@@ -104,7 +110,7 @@ class ProductServiceTest {
         when(userRepository.findSellerById(sellerEmail)).thenReturn(null);
 
         assertThrows(UserNotRegisteredException.class, () -> {
-            productService.saveProduct(product, productAvailability, sellerEmail);
+            productService.saveProduct(new ProductService.SaveProductRequest(product, productAvailability, sellerEmail));
         });
 
         verify(productRepository, never()).save(any());

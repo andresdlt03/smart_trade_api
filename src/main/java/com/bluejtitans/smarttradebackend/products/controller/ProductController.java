@@ -35,7 +35,7 @@ public class ProductController {
             ProductAvailability productAvailability = new ProductAvailability();
             productAvailability.setPrice(requestBody.getPrice());
             productAvailability.setStock(requestBody.getStock());
-            productService.saveProduct(product, productAvailability, requestBody.getSellerEmail());
+            productService.saveProduct(new ProductService.SaveProductRequest(product, productAvailability, requestBody.getSellerEmail()));
             return ResponseEntity.created(null).body(product.getName());
         } catch(UserNotRegisteredException | InvalidProductFormatException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

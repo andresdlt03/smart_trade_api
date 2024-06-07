@@ -43,10 +43,10 @@ public class Product implements IProduct{
     }
 
     public void addToHistoryPrice(double price) {
-        if (historyPrices == null) {
-            historyPrices = new ArrayList<>();
+        if (this.getHistoryPrices() == null) {
+            this.setHistoryPrices(new ArrayList<>());
         }
-        historyPrices.add(price);
+        this.getHistoryPrices().add(price);
     }
 
     public double getLastHistoryPrice() {
