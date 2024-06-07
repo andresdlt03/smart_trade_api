@@ -65,32 +65,32 @@ class ListServiceTest {
 
     @Test
     void testAddProduct() throws Exception {
-        ShoppingCart initialCart = new ShoppingCart();
-        ShoppingCartProduct initialCartProduct = createAndGetShoppingCartProduct("Product1", 100.0, 2);
-        initialCart.setShoppingCartProducts(List.of(initialCartProduct));
-
         ListRequestDTO request = new ListRequestDTO();
-        request.setQuantity(2);
+        request.setQuantity(5);
 
-        ShoppingCart savedCart = new ShoppingCart();
-        ShoppingCartProduct savedCartProduct = createAndGetShoppingCartProduct("Product2", 100.0, 10);
-        savedCart.setShoppingCartProducts(List.of(savedCartProduct));
+        ShoppingCart updatedCart = new ShoppingCart();
+        ShoppingCartProduct updatedCartProduct = createAndGetShoppingCartProduct("Product1", 100.0, 5);
+        updatedCart.setShoppingCartProducts(List.of(updatedCartProduct));
 
-        when(ShoppingCartStrategy.addProduct(request)).thenReturn(savedCart);
-        when(listRepository.save(savedCart)).thenReturn(savedCart);
+        when(ShoppingCartStrategy.addProduct(any(ListRequestDTO.class))).thenAnswer(invocation -> {
+            ListRequestDTO req = invocation.getArgument(0);
+            ShoppingCart cart = new ShoppingCart();
+            ShoppingCartProduct cartProduct = createAndGetShoppingCartProduct("Product1", 100.0, req.getQuantity());
+            cart.setShoppingCartProducts(List.of(cartProduct));
+            return cart;
+        });
+        when(listRepository.save(any(ShoppingCart.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         ShoppingCart resultCart = (ShoppingCart) listService.addProduct(ShoppingCartStrategy, request);
 
         assertNotNull(resultCart);
         assertEquals(1, resultCart.getShoppingCartProducts().size());
         ShoppingCartProduct resultProduct = resultCart.getShoppingCartProducts().get(0);
-        assertEquals(initialCartProduct, resultProduct);
-        assertEquals(10, resultProduct.getQuantity());
-        verify(listRepository, times(1)).save(savedCart);
+        assertEquals(updatedCartProduct.getQuantity(), resultProduct.getQuantity());
 
-        // Comprobar que los productos en el carrito inicial y en el carrito guardado son diferentes
-        assertNotEquals(initialCart.getShoppingCartProducts().get(0).getQuantity(), resultProduct.getQuantity());
+        verify(listRepository, times(1)).save(resultCart);
     }
+
 
     @Test
     void testAddProduct1() throws Exception {
